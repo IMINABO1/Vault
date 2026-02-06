@@ -1,0 +1,15 @@
+{
+  "documents": [
+    {
+      "id": "1",
+      "userId": "user123",
+      "type": "I-20",
+      "docNumber": "N123456789",
+      "holder": "James Richard",
+      "expiryDate": "2028-12-31",
+      "status": "Verified",
+      "issuingCountry": "USA",
+      "imageUrl": "https://supabase.../doc1.png"
+    }
+  ]
+}
