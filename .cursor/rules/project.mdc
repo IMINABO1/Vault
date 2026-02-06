@@ -1,0 +1,56 @@
+# Vault Project Rules
+
+## What is Vault?
+
+Vault is a verified digital document wallet with "Traffic Stop Mode" for Black civilians and immigrants to safely present ID during police encounters. It removes the need to reach into pockets/gloveboxes—the moment that triggers implicit bias.
+
+## Core Features
+
+1. **Verified Secure Wallet** - Upload and verify IDs (License, Passport, I-20) with OCR
+2. **Lockdown Mode** - Screen locks to only show ID, preventing digital searches
+3. **Safety Trigger** - Sends location to emergency contacts
+
+## Happy Path Flow
+
+```
+User Uploads Doc → OCR Scans → System Verifies → Stored in Vault
+Traffic Stop → User Hits Button → Phone Locks & Brightens → ID Displayed
+```
+
+## Project Structure
+
+```
+apps/frontend/    React 19 + Vite + Tailwind (port 3000)
+apps/backend/     Express + Firebase + PostgreSQL + Gemini (port 3001)
+packages/shared/  Shared utilities (@vault/shared)
+```
+
+## Commands
+
+```bash
+npm run dev           # Start all apps
+npm run dev:frontend  # Frontend only
+npm run dev:backend   # Backend only
+npm run build         # Build all
+npm run lint          # Lint all
+```
+
+## Code Conventions
+
+- ES Modules (`import`/`export`) everywhere
+- JavaScript only, no TypeScript
+- Frontend: `@/` import alias, Tailwind CSS, Radix UI components
+- Backend: Express middleware, Firebase token auth, PostgreSQL via `pool.query()`
+
+## UX Requirements
+
+- Tap to ID display: < 2 seconds latency
+- Lockdown mode must prevent ALL navigation
+- High-contrast display for officer readability
+- PIN-locked exit to prove ownership
+
+## Environment Variables
+
+Frontend: `VITE_*` prefix required
+Backend: Standard env vars via dotenv
+See `.env.example` files for required variables
