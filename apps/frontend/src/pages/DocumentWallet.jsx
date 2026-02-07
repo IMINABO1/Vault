@@ -1,50 +1,10 @@
-import { useState, useMemo, useRef } from 'react'
-import { Search, Upload, Plus, X, FileUp } from 'lucide-react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { Search, Upload, Plus, X, FileUp, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CardCarousel } from '@/components/CardCarousel'
 import { CardZoomOverlay } from '@/components/CardZoomOverlay'
 import { useAuth } from '@/contexts/AuthContext'
-
-// Mock documents - backend should provide dates in ISO format (e.g., "2030-01-15")
-const MOCK_DOCUMENTS = [
-  {
-    id: '1',
-    type: 'Driver\'s License',
-    numberMasked: 'DL-•••••••••',
-    holder: 'Sarah Johnson',
-    location: 'California',
-    expires: '2026-12-20',
-    status: 'verified',
-  },
-  {
-    id: '2',
-    type: 'Vehicle Registration',
-    numberMasked: 'VR-••••••••',
-    holder: 'Sarah Johnson',
-    location: 'California',
-    expires: '2025-08-05',
-    status: 'verified',
-  },
-  {
-    id: '3',
-    type: 'Passport',
-    numberMasked: 'X12•••••••',
-    holder: 'Sarah Johnson',
-    location: 'USA',
-    expires: '2029-05-15',
-    status: 'verified',
-  },
-  {
-    id: '4',
-    type: 'Immigration Permit',
-    numberMasked: 'I20-••••••',
-    holder: 'Sarah Johnson',
-    location: 'USA',
-    expires: '2024-01-10',
-    status: 'expired',
-  },
-]
 
 const DOCUMENT_TYPES = [
   'Driver\'s License',
@@ -53,10 +13,23 @@ const DOCUMENT_TYPES = [
   'Vehicle Registration',
 ]
 
+// Normalize backend document shape to what the frontend components expect
+function normalizeDocument(doc) {
+  return {
+    ...doc,
+    number: doc.docNumber || doc.number,
+    expires: doc.expiryDate || doc.expires,
+    status: (doc.status || 'verified').toLowerCase(),
+    location: doc.issuingCountry || doc.location || '',
+  }
+}
+
 export default function DocumentWallet() {
   const { user } = useAuth()
   const [searchQuery, setSearchQuery] = useState('')
-  const [documents] = useState(MOCK_DOCUMENTS)
+  const [documents, setDocuments] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
   const [zoomedDocument, setZoomedDocument] = useState(null)
   const [showUpload, setShowUpload] = useState(false)
@@ -66,6 +39,23 @@ export default function DocumentWallet() {
   const [uploadError, setUploadError] = useState('')
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const fileInputRef = useRef(null)
+
+  // Fetch documents from backend on mount
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const res = await fetch('/api/documents')
+        if (!res.ok) throw new Error('Failed to load documents')
+        const data = await res.json()
+        setDocuments((data.documents || []).map(normalizeDocument))
+      } catch (err) {
+        setFetchError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDocuments()
+  }, [])
 
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0]
@@ -90,9 +80,13 @@ export default function DocumentWallet() {
         method: 'POST',
         body: formData,
       })
+      const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data.error || 'Upload failed')
+        throw new Error(data.details || data.error || 'Upload failed')
+      }
+      // Add the newly verified document to state
+      if (data.document) {
+        setDocuments((prev) => [...prev, normalizeDocument(data.document)])
       }
       setUploadSuccess(true)
       setTimeout(() => {
@@ -122,8 +116,8 @@ export default function DocumentWallet() {
     return documents.filter(
       (doc) =>
         (doc.type && doc.type.toLowerCase().includes(q)) ||
-        (doc.numberMasked && doc.numberMasked.toLowerCase().includes(q)) ||
-        (doc.number && doc.number.toLowerCase().includes(q))
+        (doc.number && doc.number.toLowerCase().includes(q)) ||
+        (doc.holder && doc.holder.toLowerCase().includes(q))
     )
   }, [documents, searchQuery])
 
@@ -197,7 +191,15 @@ export default function DocumentWallet() {
       </div>
 
       {/* Card Carousel */}
-      {filteredDocuments.length > 0 ? (
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <Loader2 className="w-8 h-8 text-muted-foreground animate-spin" />
+        </div>
+      ) : fetchError ? (
+        <p className="text-sm text-red-600 py-8 text-center">
+          {fetchError}
+        </p>
+      ) : filteredDocuments.length > 0 ? (
         <div className="w-full mb-8">
           <CardCarousel
             documents={filteredDocuments}
@@ -208,7 +210,7 @@ export default function DocumentWallet() {
         </div>
       ) : (
         <p className="text-sm text-muted-foreground py-8 text-center">
-          No documents match your search.
+          {documents.length === 0 ? 'No documents yet. Upload your first document!' : 'No documents match your search.'}
         </p>
       )}
 

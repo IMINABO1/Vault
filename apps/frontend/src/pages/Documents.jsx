@@ -1,41 +1,16 @@
-import { useState, useMemo } from 'react'
-import { FileText, Calendar, CheckCircle2, Clock, XCircle, Eye, Bell, User } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { FileText, Calendar, CheckCircle2, Clock, XCircle, Eye, Bell, Loader2 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
-const MOCK_DOCUMENTS = [
-  {
-    id: '1',
-    type: 'Passport',
-    number: 'X12345678',
-    holder: 'Sarah Johnson',
-    expires: '2030-01-15',
-    status: 'verified',
-  },
-  {
-    id: '2',
-    type: 'Driver\'s License',
-    number: 'DL-987654321',
-    holder: 'Sarah Johnson',
-    expires: '2027-03-20',
-    status: 'verified',
-  },
-  {
-    id: '3',
-    type: 'Immigration Permit',
-    number: 'IP-2024-A1B2C3',
-    holder: 'Sarah Johnson',
-    expires: '2026-02-15',
-    status: 'pending',
-  },
-  {
-    id: '4',
-    type: 'Vehicle Registration',
-    number: 'VR-7ABC123',
-    holder: 'Sarah Johnson',
-    expires: '2024-06-10',
-    status: 'expired',
-  },
-]
+// Normalize backend document shape to what the frontend expects
+function normalizeDocument(doc) {
+  return {
+    ...doc,
+    number: doc.docNumber || doc.number,
+    expires: doc.expiryDate || doc.expires,
+    status: (doc.status || 'verified').toLowerCase(),
+  }
+}
 
 // Helper to format date
 function formatDate(dateInput) {
@@ -75,11 +50,30 @@ function getFilterButtonColor(filterKey) {
 export default function Documents() {
   const { user } = useAuth()
   const [filter, setFilter] = useState('all')
+  const [documents, setDocuments] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState('')
+
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const res = await fetch('/api/documents')
+        if (!res.ok) throw new Error('Failed to load documents')
+        const data = await res.json()
+        setDocuments((data.documents || []).map(normalizeDocument))
+      } catch (err) {
+        setFetchError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDocuments()
+  }, [])
 
   const filteredDocuments = useMemo(() => {
-    if (filter === 'all') return MOCK_DOCUMENTS
-    return MOCK_DOCUMENTS.filter(doc => doc.status === filter)
-  }, [filter])
+    if (filter === 'all') return documents
+    return documents.filter(doc => doc.status === filter)
+  }, [filter, documents])
 
   return (
     <div className="min-h-screen bg-white">
@@ -128,6 +122,17 @@ export default function Documents() {
       </div>
 
       {/* Documents table */}
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <Loader2 className="w-8 h-8 text-muted-foreground animate-spin" />
+        </div>
+      ) : fetchError ? (
+        <p className="text-sm text-red-600 py-8 text-center">{fetchError}</p>
+      ) : filteredDocuments.length === 0 ? (
+        <p className="text-sm text-muted-foreground py-8 text-center">
+          {documents.length === 0 ? 'No documents yet. Upload your first document from the Vault.' : 'No documents match this filter.'}
+        </p>
+      ) : (
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -199,6 +204,7 @@ export default function Documents() {
           </table>
         </div>
       </div>
+      )}
     </div>
   )
 }
