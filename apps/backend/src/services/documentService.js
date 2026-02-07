@@ -1,28 +1,31 @@
 // src/services/documentService.js
 import fs from 'fs/promises';
-import { uploadToVault } from './storageService.js'; // The one we wrote earlier
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DB_PATH = path.join(__dirname, '../data/db.json');
 
 export const saveVerifiedDocument = async (ocrData, file, userId) => {
-  // 1. Upload to Supabase to get the permanent URL
-  const imageUrl = await uploadToVault(file, userId);
+  // MVP: skip Supabase upload, store image as base64 data URL
+  const imageUrl = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
 
-  // 2. Prepare the "Card" data for the frontend
   const newCard = {
     id: Date.now().toString(),
     userId: userId,
-    type: ocrData.type,           // e.g., "I-20"
-    docNumber: ocrData.number,    // Extracted via OCR
-    holder: ocrData.name,         // Extracted via OCR
-    expiryDate: ocrData.expiry,   // Extracted via OCR
-    status: "Verified ✅",
-    issuingCountry: "USA",
-    imageUrl: imageUrl            // <--- This is where it's stored!
+    type: ocrData.type,
+    docNumber: ocrData.number,
+    holder: ocrData.name,
+    expiryDate: ocrData.expiry,
+    status: "Verified",
+    issuingCountry: ocrData.issuingCountry || "USA",
+    imageUrl: imageUrl,
   };
 
-  // 3. Append to your simulated JSON database
-  const dbData = JSON.parse(await fs.readFile('src/data/db.json', 'utf8'));
+  // Append to JSON database
+  const dbData = JSON.parse(await fs.readFile(DB_PATH, 'utf8'));
   dbData.documents.push(newCard);
-  await fs.writeFile('src/data/db.json', JSON.stringify(dbData, null, 2));
+  await fs.writeFile(DB_PATH, JSON.stringify(dbData, null, 2));
 
   return newCard;
 };

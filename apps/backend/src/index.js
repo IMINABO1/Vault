@@ -3,6 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import documentRoutes from './routes/documentRoutes.js';
+import privacyRoutes from './routes/privacyRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,9 +21,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Routes will be added here
-// app.use('/api/auth', authRoutes);
-// app.use('/api/users', userRoutes);
+// Routes
+app.use('/api/documents', documentRoutes);
+app.use('/api/privacy', privacyRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

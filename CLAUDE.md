@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Status: MVP
+
+This is an MVP/hackathon build. We use **dummy auth** (no real authentication) and a **local JSON file** as the database. Firebase, PostgreSQL, and Supabase integrations exist in the code but are **dormant** — do not wire them up or depend on them for now.
+
 ## What is Vault?
 
 Vault is a verified digital document wallet with "Traffic Stop Mode" designed to help Black civilians and immigrants safely present identification during police encounters without the life-threatening risk of reaching into pockets or gloveboxes.
@@ -24,7 +28,7 @@ Traffic Stop → Tap Button → Phone Locks & Brightens → ID Displayed → PIN
 Turborepo monorepo with npm workspaces. Requires Node.js >=20.0.0.
 
 - **apps/frontend** — React 19 + Vite + Tailwind CSS (port 3000)
-- **apps/backend** — Express + Firebase Admin + PostgreSQL + Gemini AI (port 3001)
+- **apps/backend** — Express + Gemini AI (port 3001)
 - **packages/shared** — Shared utilities accessible via `@vault/shared`
 
 ## Commands
@@ -42,17 +46,22 @@ npm run lint         # Lint all apps
 ### API Communication
 Frontend calls `/api/*` routes which Vite proxies to the backend (configured in `apps/frontend/vite.config.js`).
 
-### Authentication Flow
-1. Frontend uses Firebase client SDK for user auth
-2. Frontend sends Firebase ID token in `Authorization: Bearer <token>` header
-3. Backend `verifyToken` middleware (`apps/backend/src/middleware/auth.js`) validates via Firebase Admin SDK
-4. Authenticated user available as `req.user`
+### Authentication (MVP)
+Dummy auth — `dummyAuth` middleware in `apps/backend/src/middleware/auth.js` injects a hardcoded demo user into `req.user`. No tokens or login required.
 
-### Database
-PostgreSQL via connection pool in `apps/backend/src/config/database.js`. Use `pool.query()` with parameterized queries.
+### Database (MVP)
+Local JSON file at `apps/backend/src/data/db.json`. No PostgreSQL or Supabase needed to run.
 
 ### AI Integration
-Gemini 1.5 Flash via `apps/backend/src/config/gemini.js`. Use `generateContent()` helper.
+Gemini 2.5 Flash via `apps/backend/src/config/gemini.js`. Use `analyzeDocument()` for OCR or `generateContent()` for general prompts.
+
+### API Endpoints
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/health` | Health check |
+| POST | `/api/documents/upload` | Upload & verify a document (multipart, field: `document` + `documentType`) |
+| POST | `/api/privacy/set-pin` | Set 4-digit lockdown PIN |
+| POST | `/api/privacy/exit-lockdown` | Verify PIN to exit lockdown |
 
 ## Code Conventions
 
