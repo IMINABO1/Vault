@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
-import { FileText, Calendar, CheckCircle2, Clock, XCircle, Eye } from 'lucide-react'
+import { FileText, Calendar, CheckCircle2, Clock, XCircle, Eye, Bell, User } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
 
 const MOCK_DOCUMENTS = [
   {
@@ -72,6 +73,7 @@ function getFilterButtonColor(filterKey) {
 }
 
 export default function Documents() {
+  const { user } = useAuth()
   const [filter, setFilter] = useState('all')
 
   const filteredDocuments = useMemo(() => {
@@ -81,14 +83,22 @@ export default function Documents() {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="dashboard-page-header mb-6">
+      <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-6">
         <div>
           <h1 className="dashboard-page-title">All Documents</h1>
           <p className="dashboard-page-subtitle">
             View and organize all your documents.
           </p>
         </div>
-      </header>
+        <div className="flex items-center gap-3">
+          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
+            <Bell className="h-5 w-5 text-slate-600" />
+          </button>
+          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600 text-white font-semibold text-sm">
+            {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+          </div>
+        </div>
+      </div>
 
       {/* Filter buttons */}
       <div className="mb-6">
@@ -104,10 +114,10 @@ export default function Documents() {
               key={key}
               onClick={() => setFilter(key)}
               className={`
-                px-4 py-2 rounded-full text-sm font-medium transition-colors border-[0.5px]
+                px-4 py-2 rounded-full text-sm font-medium transition-colors border
                 ${filter === key
                   ? `${getFilterButtonColor(key)} text-white border-transparent`
-                  : 'bg-white text-foreground border-border hover:bg-muted'
+                  : 'bg-white text-foreground border-gray-300 hover:bg-slate-50'
                 }
               `}
             >
@@ -118,11 +128,11 @@ export default function Documents() {
       </div>
 
       {/* Documents table */}
-      <div className="bg-white rounded-xl border-[0.5px] border-border overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-muted/50 border-b-[0.5px] border-border">
+              <tr className="bg-muted/50 border-b border-gray-200">
                 <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Document Type</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Document Number</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Holder</th>
@@ -135,7 +145,7 @@ export default function Documents() {
               {filteredDocuments.map((doc) => (
                 <tr
                   key={doc.id}
-                  className="border-b-[0.5px] border-border hover:bg-muted/30 transition-colors"
+                  className="border-b border-gray-200 hover:bg-muted/30 transition-colors"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">

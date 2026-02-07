@@ -1,4 +1,5 @@
-import { CheckCircle2, Clock, AlertCircle, TrendingUp } from 'lucide-react'
+import { CheckCircle, Clock, AlertCircle, TrendingUp, Bell, User, Shield, FileCheck } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
 
 const MOCK_STATS = {
   verified: 2,
@@ -35,23 +36,38 @@ const MOCK_ACTIVITIES = [
 ]
 
 export default function Verification() {
+  const { user } = useAuth()
+
   return (
     <div className="min-h-screen bg-white">
-      <header className="dashboard-page-header mb-6">
+      {/* Top Bar */}
+      <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
         <div>
           <h1 className="dashboard-page-title">Verification Status</h1>
-          <p className="dashboard-page-subtitle">
-            Track the verification status of all your documents.
-          </p>
+          <p className="dashboard-page-subtitle">Track verification status and history</p>
         </div>
-      </header>
+        <div className="flex items-center gap-3">
+          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
+            <Bell className="h-5 w-5 text-slate-600" />
+          </button>
+          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600 text-white font-semibold text-sm">
+            {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+          </div>
+        </div>
+      </div>
+
+      {/* Inner Section Title */}
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-slate-900">Verification Status</h2>
+        <p className="text-sm text-slate-600 mt-1">Track the verification status of all your documents</p>
+      </div>
 
       {/* Status Cards - Horizontal layout with icon on left */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {/* Verified Card */}
         <div className="status-card status-card-verified">
           <div className="status-card-icon-wrapper status-icon-verified">
-            <CheckCircle2 className="h-6 w-6 text-white fill-white" />
+            <CheckCircle className="h-10 w-10 text-emerald-600" />
           </div>
           <div className="flex-1">
             <p className="status-card-label">Verified</p>
@@ -62,7 +78,7 @@ export default function Verification() {
         {/* Pending Card */}
         <div className="status-card status-card-pending">
           <div className="status-card-icon-wrapper status-icon-pending">
-            <Clock className="h-6 w-6 text-white fill-white" />
+            <Clock className="h-10 w-10 text-amber-600" />
           </div>
           <div className="flex-1">
             <p className="status-card-label">Pending</p>
@@ -73,7 +89,7 @@ export default function Verification() {
         {/* Expired Card */}
         <div className="status-card status-card-expired">
           <div className="status-card-icon-wrapper status-icon-expired">
-            <AlertCircle className="h-6 w-6 text-white fill-white" />
+            <AlertCircle className="h-10 w-10 text-rose-600" />
           </div>
           <div className="flex-1">
             <p className="status-card-label">Expired</p>
@@ -84,7 +100,7 @@ export default function Verification() {
         {/* Verification Rate Card */}
         <div className="status-card status-card-rate">
           <div className="status-card-icon-wrapper status-icon-rate">
-            <TrendingUp className="h-6 w-6 text-white fill-white" />
+            <TrendingUp className="h-10 w-10 text-blue-600" />
           </div>
           <div className="flex-1">
             <p className="status-card-label">Verification Rate</p>
@@ -93,12 +109,17 @@ export default function Verification() {
         </div>
       </div>
 
-      {/* Bottom Section - Two Columns */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Bottom Section - Two Columns (wider left, narrower right) */}
+      <div className="verification-bottom-grid">
         {/* Verification Overview */}
-        <div className="bg-white rounded-xl border-[0.5px] border-border p-6">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Verification Overview</h2>
-          
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-100 p-2">
+              <Shield className="h-5 w-5 text-blue-600" />
+            </div>
+            <h2 className="text-lg font-semibold text-foreground">Verification Overview</h2>
+          </div>
+
           {/* Overall Progress */}
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
@@ -107,7 +128,7 @@ export default function Verification() {
             </div>
             <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
               <div
-                className="h-full bg-[hsl(221,83%,53%)] rounded-full transition-all"
+                className="h-full rounded-full transition-all verification-progress-bar"
                 style={{ width: `${MOCK_STATS.verificationRate}%` }}
               />
             </div>
@@ -118,78 +139,77 @@ export default function Verification() {
             {/* Verified Documents */}
             <div className="verification-status-item verification-status-verified">
               <div className="flex items-center gap-3 flex-1">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 shrink-0">
-                  <CheckCircle2 className="h-4 w-4 text-white fill-white" />
+                <div className="flex shrink-0">
+                  <CheckCircle className="h-8 w-8 text-emerald-600" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">Verified Documents</p>
-                  <p className="text-xs text-muted-foreground">Ready to use and share</p>
+                  <p className="text-sm font-medium text-emerald-900">Verified Documents</p>
+                  <p className="text-xs text-emerald-600">Ready to use and share</p>
                 </div>
               </div>
-              <span className="text-lg font-bold text-green-600">{MOCK_STATS.verified}</span>
+              <span className="text-lg font-bold text-emerald-600">{MOCK_STATS.verified}</span>
             </div>
 
             {/* Pending Verification */}
             <div className="verification-status-item verification-status-pending">
               <div className="flex items-center gap-3 flex-1">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 shrink-0">
-                  <Clock className="h-4 w-4 text-white fill-white" />
+                <div className="flex shrink-0">
+                  <Clock className="h-8 w-8 text-amber-600" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">Pending Verification</p>
-                  <p className="text-xs text-muted-foreground">Under review by our team</p>
+                  <p className="text-sm font-medium text-amber-900">Pending Verification</p>
+                  <p className="text-xs text-amber-600">Under review by our team</p>
                 </div>
               </div>
-              <span className="text-lg font-bold text-orange-600">{MOCK_STATS.pending}</span>
+              <span className="text-lg font-bold text-amber-600">{MOCK_STATS.pending}</span>
             </div>
 
             {/* Expired Documents */}
             <div className="verification-status-item verification-status-expired">
               <div className="flex items-center gap-3 flex-1">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-600 shrink-0">
-                  <AlertCircle className="h-4 w-4 text-white fill-white" />
+                <div className="flex shrink-0">
+                  <AlertCircle className="h-8 w-8 text-rose-600" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">Expired Documents</p>
-                  <p className="text-xs text-muted-foreground">Requires renewal or update</p>
+                  <p className="text-sm font-medium text-rose-900">Expired Documents</p>
+                  <p className="text-xs text-rose-600">Requires renewal or update</p>
                 </div>
               </div>
-              <span className="text-lg font-bold text-red-600">{MOCK_STATS.expired}</span>
+              <span className="text-lg font-bold text-rose-600">{MOCK_STATS.expired}</span>
             </div>
           </div>
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-xl border-[0.5px] border-border p-6">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Recent Activity</h2>
-          
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 p-2">
+              <FileCheck className="h-5 w-5 text-slate-700" />
+            </div>
+            <h2 className="text-lg font-semibold text-foreground">Recent Activity</h2>
+          </div>
+
           <div className="space-y-4">
             {MOCK_ACTIVITIES.map((activity) => (
-              <div key={activity.id} className="flex items-start gap-3 pb-4 border-b-[0.5px] border-border last:border-0 last:pb-0">
+              <div key={activity.id} className="flex items-start gap-3">
                 {activity.type === 'verified' && (
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 shrink-0 mt-0.5">
-                    <CheckCircle2 className="h-4 w-4 text-white fill-white" />
-                  </div>
+                  <CheckCircle className="h-8 w-8 text-emerald-600 shrink-0 mt-0.5" />
                 )}
                 {activity.type === 'pending' && (
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 shrink-0 mt-0.5">
-                    <Clock className="h-4 w-4 text-white fill-white" />
-                  </div>
+                  <Clock className="h-8 w-8 text-amber-600 shrink-0 mt-0.5" />
                 )}
                 {activity.type === 'expired' && (
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-600 shrink-0 mt-0.5">
-                    <AlertCircle className="h-4 w-4 text-white fill-white" />
-                  </div>
+                  <AlertCircle className="h-8 w-8 text-rose-600 shrink-0 mt-0.5" />
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-sm font-bold text-foreground">
                     {activity.type === 'verified' && 'Document Verified'}
                     {activity.type === 'pending' && 'Verification Pending'}
                     {activity.type === 'expired' && 'Document Expired'}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">{activity.document}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{activity.time}</p>
                 </div>
-                <span className="text-xs text-muted-foreground shrink-0">{activity.time}</span>
               </div>
             ))}
           </div>

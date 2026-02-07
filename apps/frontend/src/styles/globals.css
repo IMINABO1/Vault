@@ -291,7 +291,7 @@
 
 .dashboard-page-subtitle {
   font-size: 0.875rem;
-  color: var(--muted-foreground);
+  color: #475569;
   margin-top: 0.25rem;
 }
 
@@ -385,7 +385,7 @@
   height: 2.5rem;
 }
 
-/* Document cards grid */
+/* Document cards section */
 .documents-section-title {
   font-size: 1.125rem;
   font-weight: 600;
@@ -393,101 +393,11 @@
   margin-bottom: 1rem;
 }
 
-.documents-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(1, 1fr);
-}
-
-@media (min-width: 640px) {
-  .documents-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .documents-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Vibrant document card component - bright and lively */
-/* Aspect ratio: Height:Width = 1.586:1 (Length:Width = 1.586:1) */
-/* Cards should be taller than wide (portrait orientation) */
+/* Document card - aspect ratio mandated by design spec */
+/* Height:Width = 1.586:1 (portrait orientation - cards are taller than wide) */
 .document-card-vibrant {
-  border-radius: 1.25rem;
-  padding: 1rem 1.25rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  aspect-ratio: 1.586 / 1; /* Height:Width = 1.586:1 - cards are taller than wide */
+  aspect-ratio: 1.586 / 1;
   max-width: 100%;
-}
-
-.document-card-vibrant::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  pointer-events: none;
-}
-
-.document-card-vibrant::after {
-  content: '';
-  position: absolute;
-  bottom: -30%;
-  left: -10%;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  pointer-events: none;
-}
-
-.document-card-vibrant:hover {
-  transform: translateY(-2px);
-}
-
-/* Color variance: Some cards pale, some more solid for visual dynamics */
-/* Pale variants - softer, more muted */
-.document-card-vibrant.card-bg-blue-pale {
-  background: hsl(221, 45%, 65%);
-}
-
-.document-card-vibrant.card-bg-green-pale {
-  background: hsl(142, 35%, 60%);
-}
-
-.document-card-vibrant.card-bg-orange-pale {
-  background: hsl(38, 50%, 68%);
-}
-
-.document-card-vibrant.card-bg-red-pale {
-  background: hsl(0, 45%, 70%);
-}
-
-/* Solid variants - more vibrant and saturated */
-.document-card-vibrant.card-bg-blue-solid {
-  background: hsl(221, 60%, 52%);
-}
-
-.document-card-vibrant.card-bg-green-solid {
-  background: hsl(142, 50%, 48%);
-}
-
-.document-card-vibrant.card-bg-orange-solid {
-  background: hsl(38, 65%, 58%);
-}
-
-.document-card-vibrant.card-bg-red-solid {
-  background: hsl(0, 60%, 60%);
 }
 
 /* Legacy document card styles (kept for backward compatibility) */
@@ -611,7 +521,7 @@
 /* Horizontal layout with icon on left */
 .status-card {
   border-radius: 1rem;
-  border: 0.5px solid;
+  border: 1.5px solid var(--border);
   padding: 1.5rem;
   display: flex;
   flex-direction: row;
@@ -622,12 +532,10 @@
 .status-card-icon-wrapper {
   width: 3rem;
   height: 3rem;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid;
 }
 
 .status-card-label {
@@ -666,10 +574,7 @@
   border-color: #a7f3d0;
 }
 
-.status-icon-verified {
-  background: #16a34a; /* green-600 */
-  border-color: #16a34a;
-}
+.status-icon-verified {}
 
 /* Pending Status Card */
 .status-card-pending {
@@ -677,10 +582,7 @@
   border-color: #fde68a;
 }
 
-.status-icon-pending {
-  background: #ea580c; /* orange-600 */
-  border-color: #ea580c;
-}
+.status-icon-pending {}
 
 /* Expired Status Card */
 .status-card-expired {
@@ -688,10 +590,7 @@
   border-color: #fecaca;
 }
 
-.status-icon-expired {
-  background: #dc2626; /* red-600 */
-  border-color: #dc2626;
-}
+.status-icon-expired {}
 
 /* Verification Rate Card */
 .status-card-rate {
@@ -699,10 +598,7 @@
   border-color: #bae6fd;
 }
 
-.status-icon-rate {
-  background: hsl(221, 83%, 53%); /* blue */
-  border-color: hsl(221, 83%, 53%);
-}
+.status-icon-rate {}
 
 /* Verification Status Items */
 .verification-status-item {
@@ -724,6 +620,24 @@
 
 .verification-status-expired {
   background: #ffe6e6;
+}
+
+/* Verification bottom grid (wider left, narrower right) */
+.verification-bottom-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .verification-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Progress bar gradient */
+.verification-progress-bar {
+  background: linear-gradient(to right, hsl(221, 83%, 53%), hsl(180, 50%, 45%));
 }
 
 /* ===== Landing Page Hero Document Cards ===== */

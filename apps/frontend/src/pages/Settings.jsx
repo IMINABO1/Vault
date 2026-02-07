@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { User, Bell, Shield, Lock, Fingerprint, Globe, ChevronDown } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Settings() {
+  const { user } = useAuth()
   const [formData, setFormData] = useState({
     fullName: 'Sarah Johnson',
     email: 'sarah.johnson@example.com',
@@ -37,33 +39,46 @@ export default function Settings() {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="dashboard-page-header mb-6">
+      <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
         <div>
           <h1 className="dashboard-page-title">Settings</h1>
           <p className="dashboard-page-subtitle">
             Configure your account preferences.
           </p>
         </div>
-      </header>
+        <div className="flex items-center gap-3">
+          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
+            <Bell className="h-5 w-5 text-slate-600" />
+          </button>
+          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600 text-white font-semibold text-sm">
+            {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+          </div>
+        </div>
+      </div>
+
+      {/* Grey Separator */}
+      <div className="hidden" />
 
       {/* Settings Section Header */}
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-foreground mb-1">Settings</h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="text-lg font-semibold text-slate-900 mb-1">Settings</h2>
+        <p className="text-sm text-slate-600">
           Manage your account preferences and security settings
         </p>
       </div>
 
       {/* Profile Information Card */}
-      <div className="bg-white rounded-xl border-[0.5px] border-border p-6 mb-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
-          <User className="h-5 w-5 text-foreground" />
-          <h3 className="text-base font-semibold text-foreground">Profile Information</h3>
+          <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-100 p-2">
+            <User className="h-5 w-5 text-blue-600" />
+          </div>
+          <h3 className="text-base font-semibold text-slate-900">Profile Information</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Full Name
             </label>
             <Input
@@ -74,7 +89,7 @@ export default function Settings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Email Address
             </label>
             <Input
@@ -86,7 +101,7 @@ export default function Settings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Phone Number
             </label>
             <Input
@@ -98,14 +113,14 @@ export default function Settings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Country/Region
             </label>
             <div className="relative">
               <select
                 value={formData.country}
                 onChange={(e) => handleInputChange('country', e.target.value)}
-                className="flex h-9 w-full rounded-md border-[0.5px] border-input bg-transparent px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="flex h-9 w-full rounded-md border border-gray-200 bg-transparent px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
               >
                 <option value="United States">United States</option>
                 <option value="Canada">Canada</option>
@@ -118,19 +133,21 @@ export default function Settings() {
       </div>
 
       {/* Notifications Card */}
-      <div className="bg-white rounded-xl border-[0.5px] border-border p-6 mb-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
-          <Bell className="h-5 w-5 text-foreground" />
-          <h3 className="text-base font-semibold text-foreground">Notifications</h3>
+          <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-amber-100 p-2">
+            <Bell className="h-5 w-5 text-amber-600" />
+          </div>
+          <h3 className="text-base font-semibold text-slate-900">Notifications</h3>
         </div>
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <p className="text-sm font-medium text-foreground mb-0.5">
+              <p className="text-sm font-medium text-slate-900 mb-0.5">
                 Email Notifications
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-600">
                 Receive updates about your documents via email
               </p>
             </div>
@@ -139,7 +156,7 @@ export default function Settings() {
               role="switch"
               aria-checked={notifications.email}
               onClick={() => handleToggle('notifications', 'email')}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border transition-colors ${
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-[0.5px] transition-colors ${
                 notifications.email
                   ? 'bg-[hsl(221,83%,53%)] border-[hsl(221,83%,53%)]'
                   : 'bg-muted border-input'
@@ -155,10 +172,10 @@ export default function Settings() {
 
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <p className="text-sm font-medium text-foreground mb-0.5">
+              <p className="text-sm font-medium text-slate-900 mb-0.5">
                 Push Notifications
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-600">
                 Get instant alerts on your mobile device
               </p>
             </div>
@@ -167,7 +184,7 @@ export default function Settings() {
               role="switch"
               aria-checked={notifications.push}
               onClick={() => handleToggle('notifications', 'push')}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border transition-colors ${
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-[0.5px] transition-colors ${
                 notifications.push
                   ? 'bg-[hsl(221,83%,53%)] border-[hsl(221,83%,53%)]'
                   : 'bg-muted border-input'
@@ -184,23 +201,23 @@ export default function Settings() {
       </div>
 
       {/* Security & Privacy Card */}
-      <div className="bg-white rounded-xl border-[0.5px] border-border p-6 mb-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
-            <Shield className="h-4 w-4 text-green-600" />
+          <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-100 p-2">
+            <Shield className="h-5 w-5 text-emerald-600" />
           </div>
-          <h3 className="text-base font-semibold text-foreground">Security & Privacy</h3>
+          <h3 className="text-base font-semibold text-slate-900">Security & Privacy</h3>
         </div>
 
         <div className="space-y-4 mb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-1">
-              <Lock className="h-5 w-5 text-muted-foreground" />
+              <Lock className="h-5 w-5 text-slate-600" />
               <div className="flex-1">
-                <p className="text-sm font-medium text-foreground mb-0.5">
+                <p className="text-sm font-medium text-slate-900 mb-0.5">
                   Two-Factor Authentication
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-600">
                   Add an extra layer of security to your account
                 </p>
               </div>
@@ -210,7 +227,7 @@ export default function Settings() {
               role="switch"
               aria-checked={security.twoFactor}
               onClick={() => handleToggle('security', 'twoFactor')}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border transition-colors ${
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-[0.5px] transition-colors ${
                 security.twoFactor
                   ? 'bg-[hsl(221,83%,53%)] border-[hsl(221,83%,53%)]'
                   : 'bg-muted border-input'
@@ -226,12 +243,12 @@ export default function Settings() {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-1">
-              <Fingerprint className="h-5 w-5 text-muted-foreground" />
+              <Fingerprint className="h-5 w-5 text-slate-600" />
               <div className="flex-1">
-                <p className="text-sm font-medium text-foreground mb-0.5">
+                <p className="text-sm font-medium text-slate-900 mb-0.5">
                   Biometric Authentication
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-600">
                   Use fingerprint or face recognition to unlock
                 </p>
               </div>
@@ -241,7 +258,7 @@ export default function Settings() {
               role="switch"
               aria-checked={security.biometric}
               onClick={() => handleToggle('security', 'biometric')}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border transition-colors ${
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-[0.5px] transition-colors ${
                 security.biometric
                   ? 'bg-[hsl(221,83%,53%)] border-[hsl(221,83%,53%)]'
                   : 'bg-muted border-input'
@@ -256,30 +273,30 @@ export default function Settings() {
           </div>
         </div>
 
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full border-gray-200">
           Change Password
         </Button>
       </div>
 
       {/* Language & Region Card */}
-      <div className="bg-white rounded-xl border-[0.5px] border-border p-6 mb-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
-            <Globe className="h-4 w-4 text-blue-600" />
+          <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-100 p-2">
+            <Globe className="h-5 w-5 text-blue-600" />
           </div>
-          <h3 className="text-base font-semibold text-foreground">Language & Region</h3>
+          <h3 className="text-base font-semibold text-slate-900">Language & Region</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Language
             </label>
             <div className="relative">
               <select
                 value={formData.language}
                 onChange={(e) => handleInputChange('language', e.target.value)}
-                className="flex h-9 w-full rounded-md border-[0.5px] border-input bg-transparent px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
+                className="flex h-9 w-full rounded-md border border-gray-200 bg-transparent px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
               >
                 <option value="English (US)">English (US)</option>
                 <option value="English (UK)">English (UK)</option>
@@ -291,14 +308,14 @@ export default function Settings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Time Zone
             </label>
             <div className="relative">
               <select
                 value={formData.timeZone}
                 onChange={(e) => handleInputChange('timeZone', e.target.value)}
-                className="flex h-9 w-full rounded-md border-[0.5px] border-input bg-transparent px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
+                className="flex h-9 w-full rounded-md border border-gray-200 bg-transparent px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
               >
                 <option value="Pacific Time (PT)">Pacific Time (PT)</option>
                 <option value="Mountain Time (MT)">Mountain Time (MT)</option>
@@ -313,10 +330,10 @@ export default function Settings() {
 
       {/* Action Buttons */}
       <div className="flex items-center justify-end gap-3">
-        <Button variant="outline" className="px-6">
+        <Button variant="outline" className="px-6 border-gray-200">
           Cancel
         </Button>
-        <Button className="px-6 bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)]">
+        <Button className="px-6 bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)] text-white">
           Save Changes
         </Button>
       </div>

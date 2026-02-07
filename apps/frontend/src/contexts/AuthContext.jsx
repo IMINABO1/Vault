@@ -19,20 +19,17 @@ export function AuthProvider({ children }) {
     setIsLoading(false)
   }, [])
 
-  const login = (email, password) => {
-    // In a real app, this would call your backend API
-    // For now, we'll simulate login with localStorage
-    const storedUsers = JSON.parse(localStorage.getItem('vault_users') || '[]')
-    const foundUser = storedUsers.find(u => u.email === email && u.password === password)
-    
-    if (foundUser) {
-      const userData = { ...foundUser }
-      delete userData.password // Don't store password in user state
-      setUser(userData)
-      localStorage.setItem('vault_user', JSON.stringify(userData))
-      return { success: true }
+  const login = () => {
+    // MVP: dummy auth - no credentials needed
+    const userData = {
+      id: 'demo-user',
+      name: 'Demo User',
+      email: 'demo@vault.app',
+      createdAt: new Date().toISOString(),
     }
-    return { success: false, error: 'Invalid email or password' }
+    setUser(userData)
+    localStorage.setItem('vault_user', JSON.stringify(userData))
+    return { success: true }
   }
 
   const signup = (name, email, phone, password) => {
