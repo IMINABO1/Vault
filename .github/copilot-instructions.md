@@ -40,3 +40,10 @@ Frontend vars must be prefixed with `VITE_`. Backend uses standard env vars via 
 - Latency: "Tap to ID Displayed" must be < 2 seconds
 - Safety: Lockdown mode must prevent app navigation/exit
 - Accessibility: High-contrast, easy-to-read document display
+
+### Document Card Specifications
+
+- **Aspect Ratio**: Document cards MUST maintain a Height:Width ratio of **1.586:1** (portrait orientation - cards are taller than wide)
+- **CSS Implementation**: Use `aspect-ratio: 1.586 / 1` in `.document-card-vibrant` class
+- **Responsive Design**: When working on responsiveness, ensure this aspect ratio is preserved across all breakpoints
+- **Color Variance**: Cards alternate between pale and solid color variants for visual dynamics
