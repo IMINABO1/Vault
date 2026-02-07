@@ -2,7 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-const MODEL = '	gemini-2.5-flash-lite';
+const MODEL = 'gemini-2.5-flash-lite';
 
 export async function analyzeDocument(imageBuffer, mimeType, selectedType) {
   const base64Image = imageBuffer.toString('base64');

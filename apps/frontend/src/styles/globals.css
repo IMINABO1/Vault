@@ -54,45 +54,158 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  /* User-requested dark theme base */
+  --background: #0d1117; /* main page background */
+  --foreground: #e8e9ed; /* primary text color */
+
+  /* Surfaces — depth ladder: background → card → popover (each +6-8 brightness) */
+  --card: #131921; /* raised surfaces (cards, panels) */
+  --card-foreground: #e8e9ed;
+  --popover: #1a2130; /* floating surfaces (dropdowns, tooltips) */
+  --popover-foreground: #e8e9ed;
+
+  /* Accent / UI tokens (kept expressive but tuned) */
+  --primary: hsl(221 83% 53%);
+  --primary-foreground: #ffffff;
+  --secondary: #183147;
+  --secondary-foreground: #e8e9ed;
+
+  /* Muted text and borders */
+  --muted: #0f1318;
+  --muted-foreground: #b8bcc2;
+  --accent: #16223a;
+  --accent-foreground: #e8e9ed;
+
+  --destructive: #b73a4a;
+  --destructive-foreground: #ffffff;
+
+  --border: rgba(195,196,201,0.06);
+  --input: rgba(195,196,201,0.03);
+  --ring: rgba(100,130,255,0.2);
+
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+
+  /* Charts remain expressive but tuned for visibility */
+  --chart-1: #4da3ff;
+  --chart-2: #66d1ff;
+  --chart-3: #9bd6ff;
+  --chart-4: #a7ffcf;
+  --chart-5: #ffd38a;
+
+  /* Sidebar */
+  --sidebar: #0f1318;
+  --sidebar-foreground: #e8e9ed;
+  --sidebar-primary: #1f3a5a;
+  --sidebar-primary-foreground: #e8e9ed;
+  --sidebar-accent: #183147;
+  --sidebar-accent-foreground: #e8e9ed;
+  --sidebar-border: rgba(195,196,201,0.04);
+  --sidebar-ring: rgba(100,130,255,0.12);
 }
+
+/* ===== Dark Mode Atmosphere ===== */
+
+/* 1. Noise texture — subtle grain overlay prevents banding, adds tactile quality */
+.dark body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
+}
+
+/* 2. Temperature shifts — cool sidebar, neutral main, warm safety panel */
+.dark .nav-sidebar {
+  background: #0b1018; /* cool-shifted: subtle blue bias */
+}
+
+.dark .safety-sidebar {
+  background: #13110e; /* warm-shifted: subtle amber bias */
+}
+
+/* 3. Ambient brand glow — soft blue radial on main dashboard content */
+.dark .dashboard-main {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.05) 0%, transparent 55%),
+    color-mix(in srgb, var(--muted) 30%, transparent);
+}
+
+/* 4. Contrast — ensure placeholder and secondary text stay readable */
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #8b919a; /* WCAG AA compliant on dark backgrounds */
+}
+
+/* ===== Dark Mode Overrides ===== */
+/* Map common Tailwind utility classes to dark-mode-friendly values.
+   These catch hardcoded light-mode colors so pages render correctly. */
+
+/* --- Backgrounds --- */
+.dark .bg-white { background-color: var(--card) !important; }
+.dark .bg-black { background-color: var(--background) !important; }
+.dark .bg-gray-50 { background-color: var(--card) !important; }
+.dark .bg-gray-100 { background-color: var(--accent) !important; }
+.dark .bg-slate-50 { background-color: var(--accent) !important; }
+.dark .bg-slate-100 { background-color: var(--accent) !important; }
+
+/* Icon/badge backgrounds — desaturated for dark surfaces */
+.dark .bg-blue-50 { background-color: rgba(59,130,246,0.12) !important; }
+.dark .bg-blue-100 { background-color: rgba(59,130,246,0.15) !important; }
+.dark .bg-green-100 { background-color: rgba(34,197,94,0.15) !important; }
+.dark .bg-amber-100 { background-color: rgba(245,158,11,0.15) !important; }
+.dark .bg-emerald-100 { background-color: rgba(16,185,129,0.15) !important; }
+.dark .bg-orange-100 { background-color: rgba(249,115,22,0.15) !important; }
+.dark .bg-pink-100 { background-color: rgba(236,72,153,0.15) !important; }
+.dark .bg-purple-100 { background-color: rgba(168,85,247,0.15) !important; }
+.dark .bg-red-50 { background-color: rgba(239,68,68,0.10) !important; }
+.dark .bg-red-100 { background-color: rgba(239,68,68,0.15) !important; }
+
+/* --- Text --- */
+.dark .text-slate-900 { color: var(--foreground) !important; }
+.dark .text-slate-800 { color: var(--foreground) !important; }
+.dark .text-slate-700 { color: var(--muted-foreground) !important; }
+.dark .text-slate-600 { color: var(--muted-foreground) !important; }
+.dark .text-slate-500 { color: var(--muted-foreground) !important; }
+.dark .text-gray-900 { color: var(--foreground) !important; }
+.dark .text-gray-800 { color: var(--foreground) !important; }
+.dark .text-gray-700 { color: var(--muted-foreground) !important; }
+.dark .text-gray-600 { color: var(--muted-foreground) !important; }
+.dark .text-gray-500 { color: var(--muted-foreground) !important; }
+
+/* Status text — keep readable on dark backgrounds */
+.dark .text-green-700 { color: #4ade80 !important; }
+.dark .text-green-900 { color: #86efac !important; }
+.dark .text-emerald-900 { color: #6ee7b7 !important; }
+.dark .text-amber-700 { color: #fbbf24 !important; }
+.dark .text-amber-900 { color: #fcd34d !important; }
+.dark .text-red-700 { color: #f87171 !important; }
+.dark .text-rose-900 { color: #fda4af !important; }
+.dark .text-blue-700 { color: #60a5fa !important; }
+
+/* --- Borders --- */
+.dark .border-gray-200 { border-color: var(--border) !important; }
+.dark .border-gray-300 { border-color: var(--border) !important; }
+.dark .border-slate-300 { border-color: var(--border) !important; }
+.dark .border-blue-200 { border-color: rgba(59,130,246,0.25) !important; }
+.dark .border-green-200 { border-color: rgba(34,197,94,0.25) !important; }
+.dark .border-amber-200 { border-color: rgba(245,158,11,0.25) !important; }
+.dark .border-red-200 { border-color: rgba(239,68,68,0.25) !important; }
+
+/* --- Hover states --- */
+.dark .hover\:bg-slate-50:hover { background-color: var(--accent) !important; }
+.dark .hover\:bg-gray-100:hover { background-color: var(--accent) !important; }
+.dark .hover\:bg-blue-50:hover { background-color: rgba(59,130,246,0.12) !important; }
+
+/* --- Fills --- */
+.dark .fill-white { fill: var(--foreground) !important; }
+
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   body {
@@ -156,6 +269,11 @@
   display: grid;
   grid-template-columns: minmax(0, 240px) 1fr minmax(0, 280px);
   min-height: 100vh;
+  transition: grid-template-columns 0.3s ease;
+}
+
+.dashboard-layout.dashboard-layout-collapsed {
+  grid-template-columns: minmax(0, 240px) 1fr 56px;
 }
 
 @media (max-width: 1024px) {
@@ -230,7 +348,7 @@
 
 .nav-sidebar-link.active {
   background: hsl(221 83% 53%); /* vibrant blue from design */
-  color: white;
+  color: var(--primary-foreground);
 }
 
 .nav-sidebar-footer {
@@ -256,7 +374,7 @@
 /* Full-page main content (bright white background) */
 .dashboard-main-full {
   overflow: auto;
-  background: white;
+  background: var(--card);
   padding: 2rem 3rem;
 }
 
@@ -291,7 +409,7 @@
 
 .dashboard-page-subtitle {
   font-size: 0.875rem;
-  color: #475569;
+  color: var(--muted-foreground);
   margin-top: 0.25rem;
 }
 
@@ -318,23 +436,64 @@
 .stat-card {
   border-radius: 1rem;
   border: 0.5px solid var(--border);
-  background: white;
+  background: var(--card);
   padding: 1.25rem;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.stat-card:hover {
+  box-shadow: 0 0 16px rgba(100,130,255,0.12);
 }
 
 .stat-card.verified {
   background: hsl(142 76% 96%);
   border-color: hsl(142 76% 88%);
 }
+.stat-card.verified:hover {
+  box-shadow: 0 0 18px rgba(34,197,94,0.25);
+  border-color: hsl(142 76% 78%);
+}
+.dark .stat-card.verified {
+  background: rgba(34,197,94,0.10);
+  border-color: rgba(34,197,94,0.20);
+}
+.dark .stat-card.verified:hover {
+  box-shadow: 0 0 20px rgba(34,197,94,0.30);
+  border-color: rgba(34,197,94,0.45);
+}
 
 .stat-card.pending {
   background: hsl(38 92% 95%);
   border-color: hsl(38 92% 85%);
 }
+.stat-card.pending:hover {
+  box-shadow: 0 0 18px rgba(245,158,11,0.25);
+  border-color: hsl(38 92% 72%);
+}
+.dark .stat-card.pending {
+  background: rgba(245,158,11,0.10);
+  border-color: rgba(245,158,11,0.20);
+}
+.dark .stat-card.pending:hover {
+  box-shadow: 0 0 20px rgba(245,158,11,0.30);
+  border-color: rgba(245,158,11,0.45);
+}
 
 .stat-card.expired {
   background: hsl(0 84% 97%);
   border-color: hsl(0 84% 90%);
+}
+.stat-card.expired:hover {
+  box-shadow: 0 0 18px rgba(239,68,68,0.25);
+  border-color: hsl(0 84% 78%);
+}
+.dark .stat-card.expired {
+  background: rgba(239,68,68,0.10);
+  border-color: rgba(239,68,68,0.20);
+}
+.dark .stat-card.expired:hover {
+  box-shadow: 0 0 20px rgba(239,68,68,0.30);
+  border-color: rgba(239,68,68,0.45);
 }
 
 .stat-card-label {
@@ -353,6 +512,10 @@
 .stat-card.verified .stat-card-value { color: hsl(142 76% 25%); }
 .stat-card.pending .stat-card-value { color: hsl(38 92% 30%); }
 .stat-card.expired .stat-card-value { color: hsl(0 84% 40%); }
+
+.dark .stat-card.verified .stat-card-value { color: #4ade80; }
+.dark .stat-card.pending .stat-card-value { color: #fbbf24; }
+.dark .stat-card.expired .stat-card-value { color: #f87171; }
 
 /* Search and upload bar */
 .search-upload-bar {
@@ -412,7 +575,7 @@
 .document-card.verified { background: hsl(210 100% 97%); border-color: hsl(210 100% 90%); }
 .document-card.pending { background: hsl(38 92% 96%); border-color: hsl(38 92% 88%); }
 .document-card.expired { background: hsl(0 84% 97%); border-color: hsl(0 84% 90%); }
-.document-card.default { background: white; }
+.document-card.default { background: var(--card); }
 
 /* Right sidebar - Safety Features */
 .safety-sidebar {
@@ -420,6 +583,96 @@
   border-left: 0.5px solid var(--border);
   padding: 1.25rem;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  transition: padding 0.3s ease;
+}
+
+.safety-sidebar-collapsed {
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Collapse / expand toggle button */
+.safety-collapse-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 0.625rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted-foreground);
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+  margin-bottom: 0.75rem;
+  align-self: flex-end;
+}
+
+.safety-sidebar-collapsed .safety-collapse-btn {
+  align-self: center;
+}
+
+.safety-collapse-btn:hover {
+  background: var(--accent);
+  color: var(--foreground);
+}
+
+/* Collapsed icon stack */
+.safety-collapsed-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.safety-collapsed-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.safety-collapsed-icon-btn:hover {
+  background: var(--accent);
+  color: var(--foreground);
+}
+
+.safety-collapsed-lockdown {
+  background: rgba(220, 38, 38, 0.15);
+  border-color: rgba(220, 38, 38, 0.3);
+  color: #ef4444;
+}
+
+.safety-collapsed-lockdown:hover {
+  background: rgba(220, 38, 38, 0.25);
+  color: #f87171;
+}
+
+/* User avatar section at bottom of safety sidebar */
+.safety-user-section {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.safety-sidebar-collapsed .safety-user-section {
+  justify-content: center;
 }
 
 @media (max-width: 1024px) {
@@ -463,25 +716,28 @@
 .safety-quick-actions {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .safety-quick-action {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.95rem;
   color: var(--foreground);
-  background: color-mix(in srgb, var(--muted) 50%, transparent);
-  border: 0.5px solid var(--border);
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(16,24,40,0.04), 0 1px 2px rgba(16,24,40,0.06);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.12s, transform 0.08s;
 }
 
 .safety-quick-action:hover {
-  background: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--card));
+  transform: translateY(-1px);
 }
 
 /* Toggle switch for safety panel */
@@ -509,7 +765,7 @@
   block-size: 1.25rem;
   inline-size: 1.25rem;
   border-radius: 9999px;
-  background: white;
+  background: var(--card-foreground);
   transition: transform 0.2s;
 }
 
@@ -570,35 +826,43 @@
 
 /* Verified Status Card */
 .status-card-verified {
-  background: #e6fff2;
-  border-color: #a7f3d0;
+  background: color-mix(in srgb, var(--card) 8%, #e6fff2 92%);
+  border-color: color-mix(in srgb, var(--border) 30%, #a7f3d0 70%);
 }
-
-.status-icon-verified {}
+.dark .status-card-verified {
+  background: rgba(34,197,94,0.08);
+  border-color: rgba(34,197,94,0.20);
+}
 
 /* Pending Status Card */
 .status-card-pending {
-  background: #fffceb;
-  border-color: #fde68a;
+  background: color-mix(in srgb, var(--card) 8%, #fffceb 92%);
+  border-color: color-mix(in srgb, var(--border) 30%, #fde68a 70%);
 }
-
-.status-icon-pending {}
+.dark .status-card-pending {
+  background: rgba(245,158,11,0.08);
+  border-color: rgba(245,158,11,0.20);
+}
 
 /* Expired Status Card */
 .status-card-expired {
-  background: #ffe6e6;
-  border-color: #fecaca;
+  background: color-mix(in srgb, var(--card) 8%, #ffe6e6 92%);
+  border-color: color-mix(in srgb, var(--border) 30%, #fecaca 70%);
 }
-
-.status-icon-expired {}
+.dark .status-card-expired {
+  background: rgba(239,68,68,0.08);
+  border-color: rgba(239,68,68,0.20);
+}
 
 /* Verification Rate Card */
 .status-card-rate {
-  background: #e0f2ff;
-  border-color: #bae6fd;
+  background: color-mix(in srgb, var(--card) 8%, #e0f2ff 92%);
+  border-color: color-mix(in srgb, var(--border) 30%, #bae6fd 70%);
 }
-
-.status-icon-rate {}
+.dark .status-card-rate {
+  background: rgba(59,130,246,0.08);
+  border-color: rgba(59,130,246,0.20);
+}
 
 /* Verification Status Items */
 .verification-status-item {
@@ -613,13 +877,22 @@
 .verification-status-verified {
   background: #e6fff2;
 }
+.dark .verification-status-verified {
+  background: rgba(34,197,94,0.08);
+}
 
 .verification-status-pending {
   background: #fffceb;
 }
+.dark .verification-status-pending {
+  background: rgba(245,158,11,0.08);
+}
 
 .verification-status-expired {
   background: #ffe6e6;
+}
+.dark .verification-status-expired {
+  background: rgba(239,68,68,0.08);
 }
 
 /* Verification bottom grid (wider left, narrower right) */

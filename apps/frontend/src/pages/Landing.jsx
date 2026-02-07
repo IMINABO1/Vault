@@ -49,7 +49,7 @@ const features = [
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b-[0.5px] border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -134,13 +134,14 @@ export default function Landing() {
           <div className="relative">
             <div className="space-y-4">
               {/* Passport Card */}
+              <div style={{ transform: 'translate(80px, 60px)' }}>
               <Link to="/login" className="block group animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
                 <div className="document-card-hero document-card-hero-blue group-hover:scale-105 group-hover:-translate-y-2 transition-all duration-300 cursor-pointer">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30 backdrop-blur-sm group-hover:bg-white/40 transition-colors">
                       <Shield className="h-5 w-5 text-white stroke-2" fill="none" />
                     </div>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full !bg-white/90 !text-green-800 text-xs font-medium">
                       <CheckCircle2 className="h-3 w-3" />
                       Verified
                     </span>
@@ -153,6 +154,7 @@ export default function Landing() {
                   </div>
                 </div>
               </Link>
+              </div>
 
               {/* Driver's License Card */}
               <Link to="/dashboard" className="block group animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
@@ -161,7 +163,7 @@ export default function Landing() {
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30 backdrop-blur-sm group-hover:bg-white/40 transition-colors">
                       <Shield className="h-5 w-5 text-white stroke-2" fill="none" />
                     </div>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full !bg-white/90 !text-green-800 text-xs font-medium">
                       <CheckCircle2 className="h-3 w-3" />
                       Verified
                     </span>
@@ -197,7 +199,7 @@ export default function Landing() {
               return (
                 <div
                   key={index}
-                  className="bg-white rounded-xl border-[0.5px] border-border p-6 transition-colors"
+                  className="bg-card rounded-xl border-[0.5px] border-border p-6 transition-colors"
                 >
                   <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${feature.iconColor} mb-4`}>
                     <Icon className={`h-6 w-6 ${feature.iconBgColor}`} />
@@ -222,7 +224,7 @@ export default function Landing() {
               Join thousands of users who trust SecureVault with their important documents
             </p>
             <Link to="/login">
-              <Button size="lg" className="bg-white text-[hsl(221,83%,53%)] hover:bg-white/90 px-8 mb-3">
+              <Button size="lg" className="!bg-white !text-[hsl(221,83%,53%)] hover:!bg-white/90 px-8 mb-3">
                 Get Started Free
               </Button>
             </Link>
@@ -234,7 +236,7 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t-[0.5px] border-border bg-white py-12">
+      <footer className="border-t-[0.5px] border-border bg-background py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             {/* Company Branding */}

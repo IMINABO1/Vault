@@ -1,4 +1,4 @@
-import { CheckCircle, Clock, AlertCircle, TrendingUp, Bell, User, Shield, FileCheck } from 'lucide-react'
+import { CheckCircle, Clock, AlertCircle, TrendingUp, Bell, Shield, FileCheck } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
 const MOCK_STATS = {
@@ -39,16 +39,16 @@ export default function Verification() {
   const { user } = useAuth()
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Top Bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
+      <div className="flex items-center justify-between pb-4 border-b border-border mb-4">
         <div>
           <h1 className="dashboard-page-title">Verification Status</h1>
           <p className="dashboard-page-subtitle">Track verification status and history</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
-            <Bell className="h-5 w-5 text-slate-600" />
+          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-border bg-card hover:bg-accent transition-colors">
+            <Bell className="h-5 w-5 text-muted-foreground" />
           </button>
           <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600 text-white font-semibold text-sm">
             {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -58,8 +58,8 @@ export default function Verification() {
 
       {/* Inner Section Title */}
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900">Verification Status</h2>
-        <p className="text-sm text-slate-600 mt-1">Track the verification status of all your documents</p>
+        <h2 className="text-xl font-bold text-foreground">Verification Status</h2>
+        <p className="text-sm text-muted-foreground mt-1">Track the verification status of all your documents</p>
       </div>
 
       {/* Status Cards - Horizontal layout with icon on left */}
@@ -112,7 +112,7 @@ export default function Verification() {
       {/* Bottom Section - Two Columns (wider left, narrower right) */}
       <div className="verification-bottom-grid">
         {/* Verification Overview */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center gap-2 mb-4">
             <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-100 p-2">
               <Shield className="h-5 w-5 text-blue-600" />
@@ -181,10 +181,10 @@ export default function Verification() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center gap-2 mb-4">
             <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 p-2">
-              <FileCheck className="h-5 w-5 text-slate-700" />
+              <FileCheck className="h-5 w-5 text-muted-foreground" />
             </div>
             <h2 className="text-lg font-semibold text-foreground">Recent Activity</h2>
           </div>

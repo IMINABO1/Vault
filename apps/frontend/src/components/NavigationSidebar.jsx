@@ -1,6 +1,5 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, FileText, CheckCircle, Settings, Lock, LogOut } from 'lucide-react'
-import { useAuth } from '@/contexts/AuthContext'
+import { NavLink } from 'react-router-dom'
+import { LayoutDashboard, FileText, CheckCircle, Settings } from 'lucide-react'
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -10,14 +9,6 @@ const navItems = [
 ]
 
 export function NavigationSidebar() {
-  const { logout } = useAuth()
-  const navigate = useNavigate()
-
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
-
   return (
     <aside className="nav-sidebar">
       <div className="nav-sidebar-brand">
@@ -48,20 +39,6 @@ export function NavigationSidebar() {
           </NavLink>
         ))}
       </nav>
-      <div className="nav-sidebar-footer">
-        <div className="flex items-center gap-2 text-muted-foreground mb-1">
-          <Lock className="h-4 w-4 shrink-0" aria-hidden />
-          <span className="font-medium">Encrypted & Secure</span>
-        </div>
-        <p className="text-muted-foreground mb-3">All documents are protected with bank-level encryption.</p>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-        >
-          <LogOut className="h-4 w-4 shrink-0" aria-hidden />
-          <span>Sign Out</span>
-        </button>
-      </div>
     </aside>
   )
 }

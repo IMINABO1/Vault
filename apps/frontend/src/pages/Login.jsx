@@ -20,7 +20,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Back Button */}
         <Link
@@ -43,7 +43,7 @@ export default function Login() {
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-2xl border-[0.5px] border-border p-8">
+        <div className="bg-card rounded-2xl border-[0.5px] border-border p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">

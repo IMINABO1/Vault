@@ -1,50 +1,9 @@
-import { useState, useMemo, useRef } from 'react'
-import { Search, Upload, Plus, X, FileUp } from 'lucide-react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { Search, Upload, Plus, X, FileUp, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CardCarousel } from '@/components/CardCarousel'
 import { CardZoomOverlay } from '@/components/CardZoomOverlay'
-import { useAuth } from '@/contexts/AuthContext'
-
-// Mock documents - backend should provide dates in ISO format (e.g., "2030-01-15")
-const MOCK_DOCUMENTS = [
-  {
-    id: '1',
-    type: 'Driver\'s License',
-    numberMasked: 'DL-•••••••••',
-    holder: 'Sarah Johnson',
-    location: 'California',
-    expires: '2026-12-20',
-    status: 'verified',
-  },
-  {
-    id: '2',
-    type: 'Vehicle Registration',
-    numberMasked: 'VR-••••••••',
-    holder: 'Sarah Johnson',
-    location: 'California',
-    expires: '2025-08-05',
-    status: 'verified',
-  },
-  {
-    id: '3',
-    type: 'Passport',
-    numberMasked: 'X12•••••••',
-    holder: 'Sarah Johnson',
-    location: 'USA',
-    expires: '2029-05-15',
-    status: 'verified',
-  },
-  {
-    id: '4',
-    type: 'Immigration Permit',
-    numberMasked: 'I20-••••••',
-    holder: 'Sarah Johnson',
-    location: 'USA',
-    expires: '2024-01-10',
-    status: 'expired',
-  },
-]
 
 const DOCUMENT_TYPES = [
   'Driver\'s License',
@@ -53,10 +12,22 @@ const DOCUMENT_TYPES = [
   'Vehicle Registration',
 ]
 
+// Normalize backend document shape to what the frontend components expect
+function normalizeDocument(doc) {
+  return {
+    ...doc,
+    number: doc.docNumber || doc.number,
+    expires: doc.expiryDate || doc.expires,
+    status: (doc.status || 'verified').toLowerCase(),
+    location: doc.issuingCountry || doc.location || '',
+  }
+}
+
 export default function DocumentWallet() {
-  const { user } = useAuth()
   const [searchQuery, setSearchQuery] = useState('')
-  const [documents] = useState(MOCK_DOCUMENTS)
+  const [documents, setDocuments] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
   const [zoomedDocument, setZoomedDocument] = useState(null)
   const [showUpload, setShowUpload] = useState(false)
@@ -66,6 +37,23 @@ export default function DocumentWallet() {
   const [uploadError, setUploadError] = useState('')
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const fileInputRef = useRef(null)
+
+  // Fetch documents from backend on mount
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const res = await fetch('/api/documents')
+        if (!res.ok) throw new Error('Failed to load documents')
+        const data = await res.json()
+        setDocuments((data.documents || []).map(normalizeDocument))
+      } catch (err) {
+        setFetchError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDocuments()
+  }, [])
 
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0]
@@ -90,9 +78,13 @@ export default function DocumentWallet() {
         method: 'POST',
         body: formData,
       })
+      const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data.error || 'Upload failed')
+        throw new Error(data.details || data.error || 'Upload failed')
+      }
+      // Add the newly verified document to state
+      if (data.document) {
+        setDocuments((prev) => [...prev, normalizeDocument(data.document)])
       }
       setUploadSuccess(true)
       setTimeout(() => {
@@ -122,8 +114,8 @@ export default function DocumentWallet() {
     return documents.filter(
       (doc) =>
         (doc.type && doc.type.toLowerCase().includes(q)) ||
-        (doc.numberMasked && doc.numberMasked.toLowerCase().includes(q)) ||
-        (doc.number && doc.number.toLowerCase().includes(q))
+        (doc.number && doc.number.toLowerCase().includes(q)) ||
+        (doc.holder && doc.holder.toLowerCase().includes(q))
     )
   }, [documents, searchQuery])
 
@@ -197,7 +189,15 @@ export default function DocumentWallet() {
       </div>
 
       {/* Card Carousel */}
-      {filteredDocuments.length > 0 ? (
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <Loader2 className="w-8 h-8 text-muted-foreground animate-spin" />
+        </div>
+      ) : fetchError ? (
+        <p className="text-sm text-red-600 py-8 text-center">
+          {fetchError}
+        </p>
+      ) : filteredDocuments.length > 0 ? (
         <div className="w-full mb-8">
           <CardCarousel
             documents={filteredDocuments}
@@ -208,14 +208,14 @@ export default function DocumentWallet() {
         </div>
       ) : (
         <p className="text-sm text-muted-foreground py-8 text-center">
-          No documents match your search.
+          {documents.length === 0 ? 'No documents yet. Upload your first document!' : 'No documents match your search.'}
         </p>
       )}
 
       {/* Add New Document */}
       <div className="w-full max-w-sm sm:max-w-md mx-auto mb-10">
         <button
-          className="w-full h-14 border-2 border-dashed border-slate-300 rounded-xl flex items-center justify-center gap-2 text-slate-500 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+          className="w-full h-14 border-2 border-dashed border-border rounded-xl flex items-center justify-center gap-2 text-muted-foreground hover:text-[hsl(221,83%,53%)] hover:border-[hsl(221,83%,53%)] hover:bg-accent transition-colors"
           onClick={() => setShowUpload(true)}
         >
           <Plus className="w-5 h-5" />
@@ -237,7 +237,7 @@ export default function DocumentWallet() {
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeUploadDialog}
           />
-          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
+          <div className="relative bg-card rounded-2xl shadow-xl w-full max-w-md mx-4 p-6 border border-border">
             <button
               onClick={closeUploadDialog}
               className="absolute top-4 right-4 text-muted-foreground hover:text-foreground"
@@ -266,7 +266,7 @@ export default function DocumentWallet() {
                   <select
                     value={documentType}
                     onChange={(e) => setDocumentType(e.target.value)}
-                    className="flex h-10 w-full rounded-lg border-[0.5px] border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    className="flex h-10 w-full rounded-lg border-[0.5px] border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                   >
                     <option value="">Select type...</option>
                     {DOCUMENT_TYPES.map((type) => (
@@ -289,7 +289,7 @@ export default function DocumentWallet() {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full h-28 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center gap-2 text-slate-500 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                    className="w-full h-28 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-[hsl(221,83%,53%)] hover:border-[hsl(221,83%,53%)] hover:bg-accent transition-colors"
                   >
                     <FileUp className="w-6 h-6" />
                     <span className="text-sm font-medium">

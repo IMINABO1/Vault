@@ -1,41 +1,16 @@
-import { useState, useMemo } from 'react'
-import { FileText, Calendar, CheckCircle2, Clock, XCircle, Eye, Bell, User } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { FileText, Calendar, CheckCircle2, Clock, XCircle, Eye, Bell, Loader2 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
-const MOCK_DOCUMENTS = [
-  {
-    id: '1',
-    type: 'Passport',
-    number: 'X12345678',
-    holder: 'Sarah Johnson',
-    expires: '2030-01-15',
-    status: 'verified',
-  },
-  {
-    id: '2',
-    type: 'Driver\'s License',
-    number: 'DL-987654321',
-    holder: 'Sarah Johnson',
-    expires: '2027-03-20',
-    status: 'verified',
-  },
-  {
-    id: '3',
-    type: 'Immigration Permit',
-    number: 'IP-2024-A1B2C3',
-    holder: 'Sarah Johnson',
-    expires: '2026-02-15',
-    status: 'pending',
-  },
-  {
-    id: '4',
-    type: 'Vehicle Registration',
-    number: 'VR-7ABC123',
-    holder: 'Sarah Johnson',
-    expires: '2024-06-10',
-    status: 'expired',
-  },
-]
+// Normalize backend document shape to what the frontend expects
+function normalizeDocument(doc) {
+  return {
+    ...doc,
+    number: doc.docNumber || doc.number,
+    expires: doc.expiryDate || doc.expires,
+    status: (doc.status || 'verified').toLowerCase(),
+  }
+}
 
 // Helper to format date
 function formatDate(dateInput) {
@@ -75,15 +50,34 @@ function getFilterButtonColor(filterKey) {
 export default function Documents() {
   const { user } = useAuth()
   const [filter, setFilter] = useState('all')
+  const [documents, setDocuments] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState('')
+
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const res = await fetch('/api/documents')
+        if (!res.ok) throw new Error('Failed to load documents')
+        const data = await res.json()
+        setDocuments((data.documents || []).map(normalizeDocument))
+      } catch (err) {
+        setFetchError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDocuments()
+  }, [])
 
   const filteredDocuments = useMemo(() => {
-    if (filter === 'all') return MOCK_DOCUMENTS
-    return MOCK_DOCUMENTS.filter(doc => doc.status === filter)
-  }, [filter])
+    if (filter === 'all') return documents
+    return documents.filter(doc => doc.status === filter)
+  }, [filter, documents])
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-6">
+    <div className="min-h-screen bg-background">
+      <div className="flex items-center justify-between pb-4 border-b border-border mb-6">
         <div>
           <h1 className="dashboard-page-title">All Documents</h1>
           <p className="dashboard-page-subtitle">
@@ -91,8 +85,8 @@ export default function Documents() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
-            <Bell className="h-5 w-5 text-slate-600" />
+          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-border bg-card hover:bg-accent transition-colors">
+            <Bell className="h-5 w-5 text-muted-foreground" />
           </button>
           <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600 text-white font-semibold text-sm">
             {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -117,7 +111,7 @@ export default function Documents() {
                 px-4 py-2 rounded-full text-sm font-medium transition-colors border
                 ${filter === key
                   ? `${getFilterButtonColor(key)} text-white border-transparent`
-                  : 'bg-white text-foreground border-gray-300 hover:bg-slate-50'
+                  : 'bg-card text-foreground border-border hover:bg-accent'
                 }
               `}
             >
@@ -128,11 +122,22 @@ export default function Documents() {
       </div>
 
       {/* Documents table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <Loader2 className="w-8 h-8 text-muted-foreground animate-spin" />
+        </div>
+      ) : fetchError ? (
+        <p className="text-sm text-red-600 py-8 text-center">{fetchError}</p>
+      ) : filteredDocuments.length === 0 ? (
+        <p className="text-sm text-muted-foreground py-8 text-center">
+          {documents.length === 0 ? 'No documents yet. Upload your first document from the Vault.' : 'No documents match this filter.'}
+        </p>
+      ) : (
+      <div className="bg-card rounded-xl border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-muted/50 border-b border-gray-200">
+              <tr className="bg-muted/50 border-b border-border">
                 <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Document Type</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Document Number</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Holder</th>
@@ -145,7 +150,7 @@ export default function Documents() {
               {filteredDocuments.map((doc) => (
                 <tr
                   key={doc.id}
-                  className="border-b border-gray-200 hover:bg-muted/30 transition-colors"
+                  className="border-b border-border hover:bg-muted/30 transition-colors"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
@@ -199,6 +204,7 @@ export default function Documents() {
           </table>
         </div>
       </div>
+      )}
     </div>
   )
 }
