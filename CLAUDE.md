@@ -69,6 +69,13 @@ Gemini 1.5 Flash via `apps/backend/src/config/gemini.js`. Use `generateContent()
 - High-contrast display for officer readability
 - PIN-locked exit to prove ownership
 
+### Document Card Specifications
+
+- **Aspect Ratio**: Document cards MUST maintain a Height:Width ratio of **1.586:1** (portrait orientation - cards are taller than wide)
+- **CSS Implementation**: Use `aspect-ratio: 1.586 / 1` in `.document-card-vibrant` class
+- **Responsive Design**: When working on responsiveness, ensure this aspect ratio is preserved across all breakpoints
+- **Color Variance**: Cards alternate between pale and solid color variants for visual dynamics
+
 ## Environment Variables
 
 Frontend vars must be prefixed with `VITE_`. See `.env.example` files in each app for required variables.
