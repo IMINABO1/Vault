@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CardCarousel } from '@/components/CardCarousel'
 import { CardZoomOverlay } from '@/components/CardZoomOverlay'
-import { useAuth } from '@/contexts/AuthContext'
 
 const DOCUMENT_TYPES = [
   'Driver\'s License',
@@ -25,7 +24,6 @@ function normalizeDocument(doc) {
 }
 
 export default function DocumentWallet() {
-  const { user } = useAuth()
   const [searchQuery, setSearchQuery] = useState('')
   const [documents, setDocuments] = useState([])
   const [loading, setLoading] = useState(true)
@@ -217,7 +215,7 @@ export default function DocumentWallet() {
       {/* Add New Document */}
       <div className="w-full max-w-sm sm:max-w-md mx-auto mb-10">
         <button
-          className="w-full h-14 border-2 border-dashed border-slate-300 rounded-xl flex items-center justify-center gap-2 text-slate-500 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+          className="w-full h-14 border-2 border-dashed border-border rounded-xl flex items-center justify-center gap-2 text-muted-foreground hover:text-[hsl(221,83%,53%)] hover:border-[hsl(221,83%,53%)] hover:bg-accent transition-colors"
           onClick={() => setShowUpload(true)}
         >
           <Plus className="w-5 h-5" />
@@ -239,7 +237,7 @@ export default function DocumentWallet() {
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeUploadDialog}
           />
-          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
+          <div className="relative bg-card rounded-2xl shadow-xl w-full max-w-md mx-4 p-6 border border-border">
             <button
               onClick={closeUploadDialog}
               className="absolute top-4 right-4 text-muted-foreground hover:text-foreground"
@@ -268,7 +266,7 @@ export default function DocumentWallet() {
                   <select
                     value={documentType}
                     onChange={(e) => setDocumentType(e.target.value)}
-                    className="flex h-10 w-full rounded-lg border-[0.5px] border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    className="flex h-10 w-full rounded-lg border-[0.5px] border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                   >
                     <option value="">Select type...</option>
                     {DOCUMENT_TYPES.map((type) => (
@@ -291,7 +289,7 @@ export default function DocumentWallet() {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full h-28 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center gap-2 text-slate-500 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                    className="w-full h-28 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-[hsl(221,83%,53%)] hover:border-[hsl(221,83%,53%)] hover:bg-accent transition-colors"
                   >
                     <FileUp className="w-6 h-6" />
                     <span className="text-sm font-medium">

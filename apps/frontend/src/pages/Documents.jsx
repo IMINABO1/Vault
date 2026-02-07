@@ -76,8 +76,8 @@ export default function Documents() {
   }, [filter, documents])
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-6">
+    <div className="min-h-screen bg-background">
+      <div className="flex items-center justify-between pb-4 border-b border-border mb-6">
         <div>
           <h1 className="dashboard-page-title">All Documents</h1>
           <p className="dashboard-page-subtitle">
@@ -85,8 +85,8 @@ export default function Documents() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
-            <Bell className="h-5 w-5 text-slate-600" />
+          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-border bg-card hover:bg-accent transition-colors">
+            <Bell className="h-5 w-5 text-muted-foreground" />
           </button>
           <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600 text-white font-semibold text-sm">
             {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -111,7 +111,7 @@ export default function Documents() {
                 px-4 py-2 rounded-full text-sm font-medium transition-colors border
                 ${filter === key
                   ? `${getFilterButtonColor(key)} text-white border-transparent`
-                  : 'bg-white text-foreground border-gray-300 hover:bg-slate-50'
+                  : 'bg-card text-foreground border-border hover:bg-accent'
                 }
               `}
             >
@@ -133,11 +133,11 @@ export default function Documents() {
           {documents.length === 0 ? 'No documents yet. Upload your first document from the Vault.' : 'No documents match this filter.'}
         </p>
       ) : (
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-card rounded-xl border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-muted/50 border-b border-gray-200">
+              <tr className="bg-muted/50 border-b border-border">
                 <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Document Type</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Document Number</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Holder</th>
@@ -150,7 +150,7 @@ export default function Documents() {
               {filteredDocuments.map((doc) => (
                 <tr
                   key={doc.id}
-                  className="border-b border-gray-200 hover:bg-muted/30 transition-colors"
+                  className="border-b border-border hover:bg-muted/30 transition-colors"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">

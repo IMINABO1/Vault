@@ -54,13 +54,13 @@ export default function Signup() {
     setIsLoading(true)
 
     const result = signup(formData.name, formData.email, formData.phone, formData.password)
-    
+
     if (result.success) {
       navigate('/dashboard')
     } else {
       setError(result.error || 'Signup failed. Please try again.')
     }
-    
+
     setIsLoading(false)
   }
 
@@ -70,7 +70,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Back Button */}
         <Link
@@ -93,7 +93,7 @@ export default function Signup() {
         </div>
 
         {/* Signup Form */}
-        <div className="bg-white rounded-2xl border-[0.5px] border-border p-8">
+        <div className="bg-card rounded-2xl border-[0.5px] border-border p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div className="p-3 rounded-lg bg-red-50 border-[0.5px] border-red-200 text-sm text-red-700">
@@ -243,7 +243,7 @@ export default function Signup() {
               <div className="w-full border-t-[0.5px] border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-muted-foreground">or</span>
+              <span className="px-2 bg-card text-muted-foreground">or</span>
             </div>
           </div>
 
@@ -253,7 +253,7 @@ export default function Signup() {
               type="button"
               onClick={() => handleSocialLogin('google')}
               variant="outline"
-              className="w-full h-11 border-[0.5px] border-border bg-white hover:bg-accent text-foreground font-medium"
+              className="w-full h-11 border-[0.5px] border-border bg-card hover:bg-accent text-foreground font-medium"
             >
               <div className="flex items-center justify-center gap-3">
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -282,7 +282,7 @@ export default function Signup() {
               type="button"
               onClick={() => handleSocialLogin('apple')}
               variant="outline"
-              className="w-full h-11 border-[0.5px] border-border bg-white hover:bg-accent text-foreground font-medium"
+              className="w-full h-11 border-[0.5px] border-border bg-card hover:bg-accent text-foreground font-medium"
             >
               <div className="flex items-center justify-center gap-3">
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">

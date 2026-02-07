@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { User, Bell, Shield, Lock, Fingerprint, Globe, ChevronDown } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import ThemeToggle from '@/components/ui/theme-toggle'
 import { useAuth } from '@/contexts/AuthContext'
 
 export default function Settings() {
@@ -38,8 +39,8 @@ export default function Settings() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
+    <div className="min-h-screen bg-background">
+      <div className="flex items-center justify-between pb-4 border-b border-border mb-4">
         <div>
           <h1 className="dashboard-page-title">Settings</h1>
           <p className="dashboard-page-subtitle">
@@ -47,8 +48,9 @@ export default function Settings() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
-            <Bell className="h-5 w-5 text-slate-600" />
+          <ThemeToggle />
+          <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-border bg-card hover:bg-accent transition-colors">
+            <Bell className="h-5 w-5 text-muted-foreground" />
           </button>
           <div className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600 text-white font-semibold text-sm">
             {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -61,24 +63,24 @@ export default function Settings() {
 
       {/* Settings Section Header */}
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-slate-900 mb-1">Settings</h2>
-        <p className="text-sm text-slate-600">
+        <h2 className="text-lg font-semibold text-foreground mb-1">Settings</h2>
+        <p className="text-sm text-muted-foreground">
           Manage your account preferences and security settings
         </p>
       </div>
 
       {/* Profile Information Card */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+      <div className="bg-card rounded-xl border border-border p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-100 p-2">
             <User className="h-5 w-5 text-blue-600" />
           </div>
-          <h3 className="text-base font-semibold text-slate-900">Profile Information</h3>
+          <h3 className="text-base font-semibold text-foreground">Profile Information</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Full Name
             </label>
             <Input
@@ -89,7 +91,7 @@ export default function Settings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Email Address
             </label>
             <Input
@@ -101,7 +103,7 @@ export default function Settings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Phone Number
             </label>
             <Input
@@ -113,14 +115,14 @@ export default function Settings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Country/Region
             </label>
             <div className="relative">
               <select
                 value={formData.country}
                 onChange={(e) => handleInputChange('country', e.target.value)}
-                className="flex h-9 w-full rounded-md border border-gray-200 bg-transparent px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
+                className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
               >
                 <option value="United States">United States</option>
                 <option value="Canada">Canada</option>
@@ -133,21 +135,21 @@ export default function Settings() {
       </div>
 
       {/* Notifications Card */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+      <div className="bg-card rounded-xl border border-border p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-amber-100 p-2">
             <Bell className="h-5 w-5 text-amber-600" />
           </div>
-          <h3 className="text-base font-semibold text-slate-900">Notifications</h3>
+          <h3 className="text-base font-semibold text-foreground">Notifications</h3>
         </div>
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <p className="text-sm font-medium text-slate-900 mb-0.5">
+              <p className="text-sm font-medium text-foreground mb-0.5">
                 Email Notifications
               </p>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-muted-foreground">
                 Receive updates about your documents via email
               </p>
             </div>
@@ -172,10 +174,10 @@ export default function Settings() {
 
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <p className="text-sm font-medium text-slate-900 mb-0.5">
+              <p className="text-sm font-medium text-foreground mb-0.5">
                 Push Notifications
               </p>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-muted-foreground">
                 Get instant alerts on your mobile device
               </p>
             </div>
@@ -201,23 +203,23 @@ export default function Settings() {
       </div>
 
       {/* Security & Privacy Card */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+      <div className="bg-card rounded-xl border border-border p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-100 p-2">
             <Shield className="h-5 w-5 text-emerald-600" />
           </div>
-          <h3 className="text-base font-semibold text-slate-900">Security & Privacy</h3>
+          <h3 className="text-base font-semibold text-foreground">Security & Privacy</h3>
         </div>
 
         <div className="space-y-4 mb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-1">
-              <Lock className="h-5 w-5 text-slate-600" />
+              <Lock className="h-5 w-5 text-muted-foreground" />
               <div className="flex-1">
-                <p className="text-sm font-medium text-slate-900 mb-0.5">
+                <p className="text-sm font-medium text-foreground mb-0.5">
                   Two-Factor Authentication
                 </p>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-muted-foreground">
                   Add an extra layer of security to your account
                 </p>
               </div>
@@ -243,12 +245,12 @@ export default function Settings() {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-1">
-              <Fingerprint className="h-5 w-5 text-slate-600" />
+              <Fingerprint className="h-5 w-5 text-muted-foreground" />
               <div className="flex-1">
-                <p className="text-sm font-medium text-slate-900 mb-0.5">
+                <p className="text-sm font-medium text-foreground mb-0.5">
                   Biometric Authentication
                 </p>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-muted-foreground">
                   Use fingerprint or face recognition to unlock
                 </p>
               </div>
@@ -273,30 +275,30 @@ export default function Settings() {
           </div>
         </div>
 
-        <Button variant="outline" className="w-full border-gray-200">
+        <Button variant="outline" className="w-full border-border">
           Change Password
         </Button>
       </div>
 
       {/* Language & Region Card */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+      <div className="bg-card rounded-xl border border-border p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-100 p-2">
             <Globe className="h-5 w-5 text-blue-600" />
           </div>
-          <h3 className="text-base font-semibold text-slate-900">Language & Region</h3>
+          <h3 className="text-base font-semibold text-foreground">Language & Region</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Language
             </label>
             <div className="relative">
               <select
                 value={formData.language}
                 onChange={(e) => handleInputChange('language', e.target.value)}
-                className="flex h-9 w-full rounded-md border border-gray-200 bg-transparent px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
+                className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
               >
                 <option value="English (US)">English (US)</option>
                 <option value="English (UK)">English (UK)</option>
@@ -308,14 +310,14 @@ export default function Settings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Time Zone
             </label>
             <div className="relative">
               <select
                 value={formData.timeZone}
                 onChange={(e) => handleInputChange('timeZone', e.target.value)}
-                className="flex h-9 w-full rounded-md border border-gray-200 bg-transparent px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
+                className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none"
               >
                 <option value="Pacific Time (PT)">Pacific Time (PT)</option>
                 <option value="Mountain Time (MT)">Mountain Time (MT)</option>
@@ -330,7 +332,7 @@ export default function Settings() {
 
       {/* Action Buttons */}
       <div className="flex items-center justify-end gap-3">
-        <Button variant="outline" className="px-6 border-gray-200">
+        <Button variant="outline" className="px-6 border-border">
           Cancel
         </Button>
         <Button className="px-6 bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)] text-white">
