@@ -1058,3 +1058,52 @@
     font-size: 1.375rem;
   }
 }
+
+/* ===== Add to Wallet Buttons ===== */
+.wallet-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  flex: 1;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.wallet-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.wallet-btn:active {
+  transform: scale(0.97);
+}
+
+.wallet-btn-apple {
+  background: #000000;
+  color: #ffffff;
+}
+
+.wallet-btn-google {
+  background: #ffffff;
+  color: #1f1f1f;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dark .wallet-btn-google {
+  background: #ffffff;
+  color: #1f1f1f;
+}
+
+/* When both buttons show side-by-side on sm+ */
+@media (min-width: 640px) {
+  .wallet-btn {
+    width: auto;
+    flex: 1;
+  }
+}
