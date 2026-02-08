@@ -89,7 +89,7 @@ export function CardCarousel({
   renderOrder.sort((a, b) => Math.abs(b.offset) - Math.abs(a.offset))
 
   return (
-    <div className="w-full max-w-lg lg:max-w-xl mx-auto overflow-hidden">
+    <div className="w-full max-w-lg lg:max-w-xl mx-auto">
       {/* Stack container */}
       <div
         className="relative w-full outline-none"

@@ -369,7 +369,8 @@
 
 /* Main content area */
 .dashboard-main {
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: color-mix(in srgb, var(--muted) 30%, transparent);
   padding: 1.25rem;
 }
@@ -390,7 +391,6 @@
   .dashboard-main {
     padding: 0.75rem;
     padding-top: 3.5rem;
-    overflow-x: hidden;
   }
 }
 

@@ -1,0 +1,8 @@
+<svg width="220" height="48" viewBox="0 0 220 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White squircle + blue shield -->
+  <rect width="48" height="48" rx="11" fill="white" stroke="#3B6DE0" stroke-width="2"/>
+  <path d="M24 38s10-5 10-12.5V16L24 11 14 16v9.5C14 33 24 38 24 38z" fill="#3B6DE0"/>
+  <!-- Text -->
+  <text x="58" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#3B6DE0" letter-spacing="0.5">Secure</text>
+  <text x="58" y="39" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="800" fill="#1a1a2e" letter-spacing="1">VAULT</text>
+</svg>
