@@ -37,6 +37,7 @@ export const handleDocumentUpload = async (req, res) => {
       number: analysis.documentNumber,
       expiry: analysis.expiryDate,
       issuingCountry: analysis.issuingCountry || "USA",
+      keyFields: analysis.keyFields || [],
     };
 
     // 4. Save to storage and database
@@ -146,6 +147,7 @@ export const handleUpdateDocument = async (req, res) => {
       number: analysis.documentNumber,
       expiry: analysis.expiryDate,
       issuingCountry: analysis.issuingCountry || "USA",
+      keyFields: analysis.keyFields || [],
     };
 
     // 4. Replace in database

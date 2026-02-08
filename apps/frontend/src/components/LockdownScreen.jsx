@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ShieldAlert, Lock } from 'lucide-react'
 import { CardCarousel } from '@/components/CardCarousel'
+import { CardZoomOverlay } from '@/components/CardZoomOverlay'
 
 function normalizeDocument(doc) {
   return {
@@ -10,12 +11,14 @@ function normalizeDocument(doc) {
     expires: doc.expiryDate || doc.expires,
     status: (doc.status || 'verified').toLowerCase(),
     location: doc.issuingCountry || doc.location || '',
+    keyFields: doc.keyFields || [],
   }
 }
 
 export function LockdownScreen({ onExit }) {
   const [documents, setDocuments] = useState([])
   const [activeIndex, setActiveIndex] = useState(0)
+  const [zoomedDocument, setZoomedDocument] = useState(null)
   const [pin, setPin] = useState(['', '', '', ''])
   const [error, setError] = useState('')
   const [verifying, setVerifying] = useState(false)
@@ -158,6 +161,7 @@ export function LockdownScreen({ onExit }) {
               documents={documents}
               activeIndex={activeIndex}
               onActiveIndexChange={setActiveIndex}
+              onCardClick={(doc) => setZoomedDocument(doc)}
             />
           </div>
         )}
@@ -186,6 +190,13 @@ export function LockdownScreen({ onExit }) {
           {error && <p className="text-sm text-red-400">{error}</p>}
           {verifying && <p className="text-sm text-white/40">Verifying...</p>}
         </div>
+
+        {/* Zoom overlay for flip-to-reveal key fields */}
+        <CardZoomOverlay
+          document={zoomedDocument}
+          isOpen={!!zoomedDocument}
+          onClose={() => setZoomedDocument(null)}
+        />
       </motion.div>
     </AnimatePresence>
   )

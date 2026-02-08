@@ -39,7 +39,7 @@ export default function Verification() {
   const { user } = useAuth()
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Top Bar */}
       <div className="flex items-center justify-between pb-4 border-b border-border mb-4">
         <div>
@@ -112,7 +112,7 @@ export default function Verification() {
       {/* Bottom Section - Two Columns (wider left, narrower right) */}
       <div className="verification-bottom-grid">
         {/* Verification Overview */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="rounded-xl border border-border p-4 sm:p-6">
           <div className="flex items-center gap-2 mb-4">
             <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-100 p-2">
               <Shield className="h-5 w-5 text-blue-600" />
@@ -181,7 +181,7 @@ export default function Verification() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="rounded-xl border border-border p-4 sm:p-6">
           <div className="flex items-center gap-2 mb-4">
             <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 p-2">
               <FileCheck className="h-5 w-5 text-muted-foreground" />

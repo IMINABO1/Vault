@@ -28,8 +28,18 @@ Respond with this exact JSON structure:
   "documentNumber": "ID/document number or null",
   "expiryDate": "YYYY-MM-DD or null",
   "issuingCountry": "country name or null",
-  "rejectionReason": "why this was rejected, or null"
+  "rejectionReason": "why this was rejected, or null",
+  "keyFields": [{"label": "Field Name", "value": "extracted value"}]
 }
+
+For "keyFields", extract 5-8 fields most important for law enforcement verification. Choose fields based on document type:
+- Driver's License: Full Name, Date of Birth, Address, License Number, Class, Expiration, State, Sex
+- Passport: Full Name, Nationality, Date of Birth, Passport Number, Expiration, Place of Birth, Sex
+- I-20 / Immigration Papers: SEVIS ID, Full Name, Country of Citizenship, Date of Birth, School Name, Class of Admission (e.g. F-1), Program Start Date, Program End Date
+- Vehicle Registration: Owner Name, VIN, Make/Model/Year, License Plate, Registration Expiration, State
+- Visa: Full Name, Visa Type, Visa Number, Nationality, Expiration, Entries Allowed
+- For any other document type, extract the most relevant identifying fields.
+Always include Full Name and Date of Birth if visible on the document. Extract real values only.
 
 Rules:
 - If the image is NOT an official document (e.g., a photo of a car, a selfie, a meme, a screenshot of a chat), set isDocument to false and provide a clear rejectionReason.

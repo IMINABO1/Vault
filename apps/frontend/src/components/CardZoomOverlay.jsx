@@ -1,8 +1,10 @@
-import { useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DocumentCard } from '@/components/DocumentCard'
 
 export function CardZoomOverlay({ document: doc, isOpen, onClose }) {
+  const [isFlipped, setIsFlipped] = useState(false)
+
   // Escape key to dismiss
   const handleKeyDown = useCallback(
     (e) => {
@@ -30,6 +32,11 @@ export function CardZoomOverlay({ document: doc, isOpen, onClose }) {
     }
   }, [isOpen])
 
+  // Reset flip when overlay closes
+  useEffect(() => {
+    if (!isOpen) setIsFlipped(false)
+  }, [isOpen])
+
   return (
     <AnimatePresence>
       {isOpen && doc && (
@@ -44,9 +51,9 @@ export function CardZoomOverlay({ document: doc, isOpen, onClose }) {
             onClick={onClose}
           />
 
-          {/* Zoomed card */}
+          {/* Zoomed card + hint */}
           <motion.div
-            className="relative z-10 w-full max-w-[90vw] sm:max-w-md px-4"
+            className="relative z-10 w-full max-w-[90vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl px-4 sm:px-0 flex flex-col items-center"
             initial={{ scale: 0.8, opacity: 0, y: 30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.85, opacity: 0, y: 20 }}
@@ -56,8 +63,12 @@ export function CardZoomOverlay({ document: doc, isOpen, onClose }) {
               document={doc}
               isActive
               variant="zoomed"
-              onClick={onClose}
+              isFlipped={isFlipped}
+              onClick={() => setIsFlipped(prev => !prev)}
             />
+            <p className="text-center text-white/50 text-xs mt-4">
+              {isFlipped ? 'Tap card to see front' : 'Tap card to see details'}
+            </p>
           </motion.div>
         </div>
       )}

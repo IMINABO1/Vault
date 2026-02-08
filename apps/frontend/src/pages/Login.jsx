@@ -20,31 +20,31 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
+      <div className="w-full max-w-md md:max-w-lg">
         {/* Back Button */}
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4 sm:mb-6 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
         </Link>
 
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-6">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[hsl(221,83%,53%)]">
-              <Shield className="h-7 w-7 text-white fill-white" />
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="flex items-center justify-center mb-4 sm:mb-6">
+            <div className="flex h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 items-center justify-center rounded-xl bg-[hsl(221,83%,53%)]">
+              <Shield className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white fill-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
-          <p className="text-base text-muted-foreground">Sign in to access your secure document wallet</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">Welcome Back</h1>
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground">Sign in to access your secure document wallet</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-card rounded-2xl border-[0.5px] border-border p-8">
-          <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="bg-card rounded-2xl border-[0.5px] border-border p-5 sm:p-8 md:p-10">
+          <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
                 Email Address
@@ -57,7 +57,7 @@ export default function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="pl-11 h-11"
+                  className="pl-11 h-11 md:h-12"
                 />
               </div>
             </div>
@@ -74,7 +74,7 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="pl-11 pr-11 h-11"
+                  className="pl-11 pr-11 h-11 md:h-12"
                 />
                 <button
                   type="button"
@@ -106,14 +106,14 @@ export default function Login() {
 
             <Button
               type="submit"
-              className="w-full h-11 bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)] text-white font-medium text-base"
+              className="w-full h-11 md:h-12 bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)] text-white font-medium text-base"
             >
               Sign In
             </Button>
           </form>
 
           {/* Signup Link */}
-          <div className="mt-8 pt-6 border-t-[0.5px] border-border text-center">
+          <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t-[0.5px] border-border text-center">
             <p className="text-sm text-muted-foreground">
               Don't have an account?{' '}
               <Link to="/signup" className="text-[hsl(221,83%,53%)] hover:underline font-medium">
