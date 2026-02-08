@@ -79,7 +79,7 @@
   --destructive: #b73a4a;
   --destructive-foreground: #ffffff;
 
-  --border: rgba(195,196,201,0.06);
+  --border: rgba(195,196,201,0.15);
   --input: rgba(195,196,201,0.03);
   --ring: rgba(100,130,255,0.2);
 
@@ -219,6 +219,7 @@
 
   html {
     font-size: var(--font-size);
+    overflow-x: hidden;
   }
 
   h1 {
@@ -285,6 +286,13 @@
 @media (max-width: 640px) {
   .dashboard-layout {
     grid-template-columns: 1fr;
+    padding-bottom: 4rem; /* space for bottom nav */
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-sidebar {
+    display: none;
   }
 }
 
@@ -304,6 +312,7 @@
 @media (max-width: 640px) {
   .dashboard-layout-full {
     grid-template-columns: 1fr;
+    padding-bottom: 4rem; /* space for bottom nav */
   }
 }
 
@@ -375,18 +384,18 @@
 .dashboard-main-full {
   overflow: auto;
   background: var(--card);
-  padding: 2rem 3rem;
+  padding: 1.5rem 1.25rem;
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 641px) {
   .dashboard-main-full {
-    padding: 1.5rem 2rem;
+    padding: 2rem 3rem;
   }
 }
 
-@media (max-width: 640px) {
+@media (min-width: 1025px) {
   .dashboard-main-full {
-    padding: 1rem;
+    padding: 2rem 3rem;
   }
 }
 
@@ -559,8 +568,42 @@
 /* Document card - aspect ratio mandated by design spec */
 /* Height:Width = 1.586:1 (portrait orientation - cards are taller than wide) */
 .document-card-vibrant {
+  width: 100%;
   aspect-ratio: 1.586 / 1;
   max-width: 100%;
+}
+
+/* Flip card 3D support */
+.flip-card-container {
+  perspective: 1200px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.flip-card-front,
+.flip-card-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+}
+
+/* Hide scrollbar but keep scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 /* Legacy document card styles (kept for backward compatibility) */
@@ -778,11 +821,18 @@
 .status-card {
   border-radius: 1rem;
   border: 1.5px solid var(--border);
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
+}
+
+@media (min-width: 641px) {
+  .status-card {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
 }
 
 .status-card-icon-wrapper {
@@ -950,4 +1000,61 @@
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out forwards;
   opacity: 0;
+}
+
+/* ===== Mobile Bottom Navigation ===== */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background: var(--background);
+    border-top: 0.5px solid var(--border);
+    padding: 0.375rem 0.5rem;
+    justify-content: space-around;
+    align-items: center;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .dark .mobile-bottom-nav {
+    background: rgba(11, 16, 24, 0.95);
+  }
+
+  .mobile-bottom-nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.625rem;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .mobile-bottom-nav-link.active {
+    color: hsl(221 83% 53%);
+  }
+
+  .mobile-bottom-nav-link svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+/* Mobile dashboard page title */
+@media (max-width: 640px) {
+  .dashboard-page-title {
+    font-size: 1.375rem;
+  }
 }

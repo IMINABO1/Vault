@@ -39,7 +39,7 @@ export default function Settings() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="flex items-center justify-between pb-4 border-b border-border mb-4">
         <div>
           <h1 className="dashboard-page-title">Settings</h1>
@@ -70,7 +70,7 @@ export default function Settings() {
       </div>
 
       {/* Profile Information Card */}
-      <div className="bg-card rounded-xl border border-border p-6 mb-6">
+      <div className="rounded-xl border border-border p-4 sm:p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-100 p-2">
             <User className="h-5 w-5 text-blue-600" />
@@ -135,7 +135,7 @@ export default function Settings() {
       </div>
 
       {/* Notifications Card */}
-      <div className="bg-card rounded-xl border border-border p-6 mb-6">
+      <div className="rounded-xl border border-border p-4 sm:p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-amber-100 p-2">
             <Bell className="h-5 w-5 text-amber-600" />
@@ -203,7 +203,7 @@ export default function Settings() {
       </div>
 
       {/* Security & Privacy Card */}
-      <div className="bg-card rounded-xl border border-border p-6 mb-6">
+      <div className="rounded-xl border border-border p-4 sm:p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-100 p-2">
             <Shield className="h-5 w-5 text-emerald-600" />
@@ -281,7 +281,7 @@ export default function Settings() {
       </div>
 
       {/* Language & Region Card */}
-      <div className="bg-card rounded-xl border border-border p-6 mb-6">
+      <div className="rounded-xl border border-border p-4 sm:p-6 mb-6">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-100 p-2">
             <Globe className="h-5 w-5 text-blue-600" />

@@ -20,6 +20,7 @@ function normalizeDocument(doc) {
     expires: doc.expiryDate || doc.expires,
     status: (doc.status || 'verified').toLowerCase(),
     location: doc.issuingCountry || doc.location || '',
+    keyFields: doc.keyFields || [],
   }
 }
 
@@ -133,17 +134,17 @@ export default function DocumentWallet() {
   return (
     <div className="flex flex-col items-center">
       {/* Page Header */}
-      <div className="w-full text-left mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+      <div className="w-full text-left mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Your Vault
         </h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-xs sm:text-sm text-muted-foreground mt-1">
           Swipe through your IDs or tap to view details.
         </p>
       </div>
 
       {/* Stats */}
-      <div className="w-full mb-8">
+      <div className="w-full mb-6 sm:mb-8">
         <div className="stats-grid">
           <div className="stat-card">
             <p className="stat-card-label">Total Documents</p>
@@ -183,7 +184,7 @@ export default function DocumentWallet() {
             onClick={() => setShowUpload(true)}
           >
             <Upload className="h-4 w-4" aria-hidden />
-            Upload Document
+            <span className="hidden sm:inline">Upload Document</span>
           </Button>
         </div>
       </div>

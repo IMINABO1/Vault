@@ -20,6 +20,7 @@ export const saveVerifiedDocument = async (ocrData, file, userId) => {
     status: "Verified",
     issuingCountry: ocrData.issuingCountry || "USA",
     imageUrl: imageUrl,
+    keyFields: ocrData.keyFields || [],
   };
 
   // Append to JSON database
@@ -69,6 +70,7 @@ export const replaceDocument = async (documentId, ocrData, file, userId) => {
     status: "Verified",
     issuingCountry: ocrData.issuingCountry || "USA",
     imageUrl: imageUrl,
+    keyFields: ocrData.keyFields || [],
   };
 
   await fs.writeFile(DB_PATH, JSON.stringify(dbData, null, 2));

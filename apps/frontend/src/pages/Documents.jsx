@@ -9,6 +9,7 @@ function normalizeDocument(doc) {
     number: doc.docNumber || doc.number,
     expires: doc.expiryDate || doc.expires,
     status: (doc.status || 'verified').toLowerCase(),
+    keyFields: doc.keyFields || [],
   }
 }
 
@@ -76,7 +77,7 @@ export default function Documents() {
   }, [filter, documents])
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="flex items-center justify-between pb-4 border-b border-border mb-6">
         <div>
           <h1 className="dashboard-page-title">All Documents</h1>
@@ -108,7 +109,7 @@ export default function Documents() {
               key={key}
               onClick={() => setFilter(key)}
               className={`
-                px-4 py-2 rounded-full text-sm font-medium transition-colors border
+                px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors border
                 ${filter === key
                   ? `${getFilterButtonColor(key)} text-white border-transparent`
                   : 'bg-card text-foreground border-border hover:bg-accent'
@@ -133,17 +134,17 @@ export default function Documents() {
           {documents.length === 0 ? 'No documents yet. Upload your first document from the Vault.' : 'No documents match this filter.'}
         </p>
       ) : (
-      <div className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="rounded-xl border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-muted/50 border-b border-border">
-                <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Document Type</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Document Number</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Holder</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Expiry Date</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-foreground">Actions</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-semibold text-foreground">Document Type</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-semibold text-foreground hidden sm:table-cell">Document Number</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-semibold text-foreground hidden md:table-cell">Holder</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-semibold text-foreground hidden md:table-cell">Expiry Date</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-semibold text-foreground">Status</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-semibold text-foreground">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -152,7 +153,7 @@ export default function Documents() {
                   key={doc.id}
                   className="border-b border-border hover:bg-muted/30 transition-colors"
                 >
-                  <td className="px-6 py-4">
+                  <td className="px-3 sm:px-6 py-4">
                     <div className="flex items-center gap-2">
                       <div className={`flex h-8 w-8 items-center justify-center rounded ${getDocumentTypeBgColor(doc.status)}`}>
                         <FileText className="h-4 w-4 text-white" />
@@ -160,19 +161,19 @@ export default function Documents() {
                       <span className="text-sm text-foreground">{doc.type}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-3 sm:px-6 py-4 hidden sm:table-cell">
                     <span className="text-sm text-foreground font-mono">{doc.number}</span>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-3 sm:px-6 py-4 hidden md:table-cell">
                     <span className="text-sm text-foreground">{doc.holder}</span>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-3 sm:px-6 py-4 hidden md:table-cell">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm text-foreground">{formatDate(doc.expires)}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-3 sm:px-6 py-4">
                     {doc.status === 'verified' && (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium border-[0.5px] border-green-200">
                         <CheckCircle2 className="h-3.5 w-3.5 text-green-700 fill-green-700" />
@@ -192,7 +193,7 @@ export default function Documents() {
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-3 sm:px-6 py-4">
                     <button className="text-sm text-[hsl(221,83%,53%)] hover:underline flex items-center gap-1">
                       <Eye className="h-4 w-4" />
                       View
