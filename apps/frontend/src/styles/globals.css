@@ -290,12 +290,6 @@
   }
 }
 
-@media (max-width: 640px) {
-  .nav-sidebar {
-    display: none;
-  }
-}
-
 /* Full-page layout (without right sidebar) */
 .dashboard-layout-full {
   display: grid;
@@ -322,6 +316,12 @@
   border-right: 0.5px solid var(--border);
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 640px) {
+  .nav-sidebar {
+    display: none;
+  }
 }
 
 .nav-sidebar-brand {
@@ -371,12 +371,26 @@
 .dashboard-main {
   overflow: auto;
   background: color-mix(in srgb, var(--muted) 30%, transparent);
-  padding: 1.5rem 2rem;
+  padding: 1.25rem;
+}
+
+@media (min-width: 641px) {
+  .dashboard-main {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .dashboard-main {
+    padding: 1.5rem 2rem;
+  }
 }
 
 @media (max-width: 640px) {
   .dashboard-main {
-    padding: 1rem;
+    padding: 0.75rem;
+    padding-top: 3.5rem;
+    overflow-x: hidden;
   }
 }
 
@@ -396,6 +410,12 @@
 @media (min-width: 1025px) {
   .dashboard-main-full {
     padding: 2rem 3rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-main-full {
+    padding-top: 3.5rem;
   }
 }
 
@@ -425,29 +445,45 @@
 /* Stats cards grid */
 .stats-grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(1, 1fr);
-  margin-bottom: 2rem;
+  gap: 0.625rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 640px) {
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
   }
 }
 
 .stat-card {
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   border: 0.5px solid var(--border);
   background: var(--card);
-  padding: 1.25rem;
+  padding: 0.75rem;
   transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+@media (min-width: 640px) {
+  .stat-card {
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stat-card {
+    padding: 1.25rem;
+  }
 }
 
 .stat-card:hover {
@@ -506,16 +542,35 @@
 }
 
 .stat-card-label {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--muted-foreground);
 }
 
+@media (min-width: 640px) {
+  .stat-card-label {
+    font-size: 0.875rem;
+  }
+}
+
 .stat-card-value {
-  font-size: 1.875rem;
+  font-size: 1.375rem;
   font-weight: 700;
-  margin-top: 0.25rem;
+  margin-top: 0.125rem;
   color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .stat-card-value {
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stat-card-value {
+    font-size: 1.875rem;
+  }
 }
 
 .stat-card.verified .stat-card-value { color: hsl(142 76% 25%); }
@@ -529,9 +584,16 @@
 /* Search and upload bar */
 .search-upload-bar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .search-upload-bar {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .search-upload-bar .search-input-wrapper {
@@ -828,6 +890,15 @@
   gap: 0.75rem;
 }
 
+@media (max-width: 640px) {
+  .status-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+}
+
 @media (min-width: 641px) {
   .status-card {
     padding: 1.5rem;
@@ -844,6 +915,17 @@
   flex-shrink: 0;
 }
 
+@media (max-width: 640px) {
+  .status-card-icon-wrapper {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  .status-card-icon-wrapper svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
 .status-card-label {
   font-size: 0.875rem;
   font-weight: 500;
@@ -855,6 +937,16 @@
   font-size: 1.875rem;
   font-weight: 700;
   color: var(--foreground);
+}
+
+@media (max-width: 640px) {
+  .status-card-label {
+    font-size: 0.75rem;
+    margin-bottom: 0.125rem;
+  }
+  .status-card-value {
+    font-size: 1.5rem;
+  }
 }
 
 /* Colored numbers for status cards */
@@ -924,6 +1016,16 @@
   transition: background-color 0.15s;
 }
 
+@media (max-width: 640px) {
+  .verification-status-item {
+    padding: 0.625rem 0.75rem;
+  }
+  .verification-status-item svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
 .verification-status-verified {
   background: #e6fff2;
 }
@@ -954,7 +1056,14 @@
 
 @media (max-width: 1024px) {
   .verification-bottom-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .verification-bottom-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
@@ -1000,6 +1109,33 @@
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out forwards;
   opacity: 0;
+}
+
+/* ===== Mobile Top Header (logo only) ===== */
+.mobile-top-header {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .mobile-top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    padding: 0.625rem 0.75rem;
+    background: var(--background);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .dark .mobile-top-header {
+    background: rgba(11, 16, 24, 0.95);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
 }
 
 /* ===== Mobile Bottom Navigation ===== */
@@ -1056,5 +1192,54 @@
 @media (max-width: 640px) {
   .dashboard-page-title {
     font-size: 1.375rem;
+  }
+}
+
+/* ===== Add to Wallet Buttons ===== */
+.wallet-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  flex: 1;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.wallet-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.wallet-btn:active {
+  transform: scale(0.97);
+}
+
+.wallet-btn-apple {
+  background: #000000;
+  color: #ffffff;
+}
+
+.wallet-btn-google {
+  background: #ffffff;
+  color: #1f1f1f;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dark .wallet-btn-google {
+  background: #ffffff;
+  color: #1f1f1f;
+}
+
+/* When both buttons show side-by-side on sm+ */
+@media (min-width: 640px) {
+  .wallet-btn {
+    width: auto;
+    flex: 1;
   }
 }

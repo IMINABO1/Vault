@@ -134,17 +134,17 @@ export default function DocumentWallet() {
   return (
     <div className="flex flex-col items-center">
       {/* Page Header */}
-      <div className="w-full text-left mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+      <div className="w-full text-left mb-3 sm:mb-6">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">
           Your Vault
         </h1>
-        <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+        <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
           Swipe through your IDs or tap to view details.
         </p>
       </div>
 
       {/* Stats */}
-      <div className="w-full mb-6 sm:mb-8">
+      <div className="w-full">
         <div className="stats-grid">
           <div className="stat-card">
             <p className="stat-card-label">Total Documents</p>
@@ -166,7 +166,7 @@ export default function DocumentWallet() {
       </div>
 
       {/* Search */}
-      <div className="w-full mb-6">
+      <div className="w-full mb-4 sm:mb-6">
         <div className="search-upload-bar">
           <div className="search-input-wrapper">
             <Search className="h-5 w-5" aria-hidden />
@@ -199,7 +199,7 @@ export default function DocumentWallet() {
           {fetchError}
         </p>
       ) : filteredDocuments.length > 0 ? (
-        <div className="w-full mb-8">
+        <div className="w-full mb-4 sm:mb-8">
           <CardCarousel
             documents={filteredDocuments}
             activeIndex={clampedIndex}
@@ -214,7 +214,7 @@ export default function DocumentWallet() {
       )}
 
       {/* Add New Document */}
-      <div className="w-full max-w-sm sm:max-w-md mx-auto mb-10">
+      <div className="w-full max-w-sm sm:max-w-md mx-auto mb-6 sm:mb-10">
         <button
           className="w-full h-14 border-2 border-dashed border-border rounded-xl flex items-center justify-center gap-2 text-muted-foreground hover:text-[hsl(221,83%,53%)] hover:border-[hsl(221,83%,53%)] hover:bg-accent transition-colors"
           onClick={() => setShowUpload(true)}
