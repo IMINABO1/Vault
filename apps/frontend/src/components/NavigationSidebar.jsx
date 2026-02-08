@@ -1,8 +1,10 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, FileText, CheckCircle, Settings } from 'lucide-react'
+import { LayoutDashboard, FileText, CheckCircle, Settings, Bell } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
+import ThemeToggle from '@/components/ui/theme-toggle'
 
 const navItems = [
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/dashboard', label: 'Vault', icon: LayoutDashboard },
   { to: '/dashboard/documents', label: 'Documents', icon: FileText },
   { to: '/dashboard/verification', label: 'Verification Status', icon: CheckCircle },
   { to: '/dashboard/settings', label: 'Settings', icon: Settings },
@@ -16,8 +18,31 @@ const mobileLabels = {
 }
 
 export function NavigationSidebar() {
+  const { user } = useAuth()
+
   return (
     <>
+      {/* Mobile top header with logo */}
+      <header className="mobile-top-header">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[hsl(221,65%,52%)]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <p className="font-semibold text-sm text-foreground">SecureVault</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button className="flex items-center justify-center w-8 h-8 rounded-lg border border-border bg-card hover:bg-accent transition-colors">
+            <Bell className="h-4 w-4 text-muted-foreground" />
+          </button>
+          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-600 text-white font-semibold text-xs">
+            {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+          </div>
+        </div>
+      </header>
+
       {/* Desktop / Tablet sidebar */}
       <aside className="nav-sidebar">
         <div className="nav-sidebar-brand">

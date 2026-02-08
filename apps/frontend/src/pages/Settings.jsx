@@ -47,7 +47,7 @@ export default function Settings() {
             Configure your account preferences.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="hidden sm:flex items-center gap-3">
           <ThemeToggle />
           <button className="flex items-center justify-center w-10 h-10 rounded-xl border border-border bg-card hover:bg-accent transition-colors">
             <Bell className="h-5 w-5 text-muted-foreground" />
